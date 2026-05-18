@@ -20,7 +20,7 @@ function Ring({ pct, size, stroke, color, children }) {
   );
 }
 
-function Profile({ state, onSave }) {
+function Profile({ state, onSave, onSignOut }) {
   const [form, setForm] = useState({ ...state.profile });
   const set = (k, v) => setForm(f => ({ ...f, [k]: v }));
 
@@ -141,6 +141,22 @@ function Profile({ state, onSave }) {
       {/* Save */}
       <button onClick={() => onSave(form)} style={btnPrimary}>
         Save Profile ✓
+      </button>
+
+      {/* Sign Out */}
+      <button onClick={onSignOut} style={{
+        width: '100%',
+        background: 'rgba(239,68,68,0.1)',
+        border: '1px solid rgba(239,68,68,0.3)',
+        borderRadius: '12px',
+        color: '#ef4444',
+        fontSize: '16px',
+        fontWeight: '700',
+        padding: '14px',
+        cursor: 'pointer',
+        marginTop: '4px',
+      }}>
+        Sign Out
       </button>
 
     </div>

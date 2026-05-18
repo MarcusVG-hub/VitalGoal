@@ -1,11 +1,14 @@
-import React, { useState } from 'react';
-import { loadData, saveData, DEFAULT_STATE, todayStr } from './data/storage';
+import React, { useState, useEffect } from 'react';
+import { supabase } from './supabase';
+import { loadProfile, saveProfile, loadHealthLogs, saveHealthLog, loadStreaks, saveStreaks, signOut } from './auth';
+import { DEFAULT_STATE, todayStr } from './data/storage';
 import Header from './components/Header';
 import BottomNav from './components/BottomNav';
 import Dashboard from './pages/Dashboard';
 import Tracker from './pages/Tracker';
 import Shop from './pages/Shop';
 import Profile from './pages/Profile';
+import Auth from './pages/Auth';
 
 // ── Onboarding ──────────────────────────────────────
 function Onboarding({ onDone }) {
@@ -88,7 +91,6 @@ function Onboarding({ onDone }) {
         display: 'flex', flexDirection: 'column',
         alignItems: 'center', textAlign: 'center',
       }}>
-        {/* Logo */}
         <div style={{
           fontSize: '22px', fontWeight: '800',
           background: 'linear-gradient(135deg, #34d399, #38bdf8)',
@@ -104,7 +106,6 @@ function Onboarding({ onDone }) {
 
         <div style={{ width: '100%' }}>{cur.content}</div>
 
-        {/* Buttons */}
         <div style={{ display: 'flex', gap: '10px', marginTop: '24px', width: '100%' }}>
           {step > 0 && (
             <button onClick={() => setStep(step - 1)} style={{
@@ -133,7 +134,6 @@ function Onboarding({ onDone }) {
           </button>
         </div>
 
-        {/* Progress dots */}
         <div style={{ display: 'flex', gap: '6px', marginTop: '20px' }}>
           {steps.map((_, i) => (
             <div key={i} style={{
@@ -150,16 +150,48 @@ function Onboarding({ onDone }) {
 
 // ── Main App ─────────────────────────────────────────
 export default function App() {
-  const [state, setState] = useState(() => ({
-    ...DEFAULT_STATE,
-    ...loadData(),
-  }));
+  const [user, setUser] = useState(null);
+  const [state, setState] = useState({ ...DEFAULT_STATE });
   const [tab, setTab] = useState('dashboard');
   const [toast, setToast] = useState(null);
+  const [loading, setLoading] = useState(true);
 
-  const persist = (next) => {
-    setState(next);
-    saveData(next);
+  // Check if user is logged in
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setUser(session?.user ?? null);
+      if (session?.user) loadUserData(session.user.id);
+      else setLoading(false);
+    });
+
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      setUser(session?.user ?? null);
+      if (session?.user) loadUserData(session.user.id);
+      else { setState({ ...DEFAULT_STATE }); setLoading(false); }
+    });
+
+    return () => subscription.unsubscribe();
+  }, []);
+
+  // Load all user data from Supabase
+  const loadUserData = async (userId) => {
+    setLoading(true);
+    try {
+      const [profile, logs, streaks] = await Promise.all([
+        loadProfile(userId),
+        loadHealthLogs(userId),
+        loadStreaks(userId),
+      ]);
+      setState({
+        profile: profile || DEFAULT_STATE.profile,
+        logs: logs || {},
+        streaks: streaks || DEFAULT_STATE.streaks,
+      });
+    } catch (err) {
+      console.error('Error loading data:', err);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const showToast = (msg) => {
@@ -168,7 +200,7 @@ export default function App() {
   };
 
   // Save log entry
-  const handleSaveLog = (date, logData) => {
+  const handleSaveLog = async (date, logData) => {
     const td = todayStr();
     const updatedLogs = { ...state.logs, [date]: logData };
     let { current, best, lastLog } = state.streaks;
@@ -178,23 +210,71 @@ export default function App() {
       best = Math.max(best, current);
       lastLog = td;
     }
-    persist({ ...state, logs: updatedLogs, streaks: { current, best, lastLog } });
-    showToast('✅ Saved!');
+    const newStreaks = { current, best, lastLog };
+    setState(s => ({ ...s, logs: updatedLogs, streaks: newStreaks }));
+    try {
+      await saveHealthLog(user.id, date, logData);
+      await saveStreaks(user.id, newStreaks);
+      showToast('✅ Saved!');
+    } catch (err) {
+      showToast('❌ Error saving. Try again.');
+    }
   };
 
   // Save profile
-  const handleSaveProfile = (profile) => {
-    persist({ ...state, profile });
-    showToast('✅ Profile saved!');
+  const handleSaveProfile = async (profile) => {
+    setState(s => ({ ...s, profile }));
+    try {
+      await saveProfile(user.id, profile);
+      showToast('✅ Profile saved!');
+    } catch (err) {
+      showToast('❌ Error saving. Try again.');
+    }
   };
 
-  // Onboarding
-  if (!state.profile.name) {
+  // Handle onboarding done
+  const handleOnboardingDone = async (profile) => {
+    setState(s => ({ ...s, profile }));
+    try {
+      await saveProfile(user.id, profile);
+    } catch (err) {
+      console.error('Error saving profile:', err);
+    }
+  };
+
+  // Handle sign out
+  const handleSignOut = async () => {
+    await signOut();
+    setState({ ...DEFAULT_STATE });
+    setTab('dashboard');
+  };
+
+  // Loading screen
+  if (loading) {
     return (
-      <Onboarding onDone={(profile) => {
-        persist({ ...state, profile });
-      }}/>
+      <div style={{
+        minHeight: '100vh', background: '#0a0a0f',
+        display: 'flex', alignItems: 'center',
+        justifyContent: 'center', flexDirection: 'column', gap: '16px',
+      }}>
+        <div style={{
+          fontSize: '32px', fontWeight: '800',
+          background: 'linear-gradient(135deg, #34d399, #38bdf8)',
+          WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent',
+        }}>⚡ VitalGoal</div>
+        <div style={{ color: '#6b7280', fontSize: '14px' }}>Loading your data...</div>
+      </div>
     );
+  }
+
+  // Not logged in — show auth screen
+  if (!user) {
+    return <Auth onAuth={() => {}} />;
+  }
+
+  // Logged in but no profile — show onboarding
+  if (!state.profile.name) {
+    return <Onboarding onDone={handleOnboardingDone} />;
   }
 
   return (
@@ -210,8 +290,8 @@ export default function App() {
         <div style={{
           position: 'fixed', bottom: '90px', left: '50%',
           transform: 'translateX(-50%)',
-          background: '#10b981', color: '#fff',
-          fontWeight: '700', fontSize: '14px',
+          background: toast.includes('❌') ? '#ef4444' : '#10b981',
+          color: '#fff', fontWeight: '700', fontSize: '14px',
           padding: '10px 24px', borderRadius: '24px',
           zIndex: 999, boxShadow: '0 4px 24px rgba(0,0,0,0.4)',
           whiteSpace: 'nowrap',
@@ -233,7 +313,7 @@ export default function App() {
           <Shop />
         )}
         {tab === 'profile' && (
-          <Profile state={state} onSave={handleSaveProfile} />
+          <Profile state={state} onSave={handleSaveProfile} onSignOut={handleSignOut} />
         )}
       </div>
 
