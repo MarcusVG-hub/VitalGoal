@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 const products = [
   {
@@ -9,7 +9,7 @@ const products = [
     price: '€7',
     color: '#38bdf8',
     type: 'ebook',
-    priceId: 'price_1TYuLHCCF1YwJaAOROvyhW9r',
+    link: 'https://buy.stripe.com/00waEWgWF9Sf2lsas8fAc00',
   },
   {
     id: 2,
@@ -19,7 +19,7 @@ const products = [
     price: '€9',
     color: '#a78bfa',
     type: 'ebook',
-    priceId: 'price_1TYuNVCCF1YwJaAOgeDuJ6jf',
+    link: 'https://buy.stripe.com/dRm5kC35Pc0nd067fWfAc01',
   },
   {
     id: 3,
@@ -29,7 +29,7 @@ const products = [
     price: '€9',
     color: '#fb923c',
     type: 'ebook',
-    priceId: 'price_1TYuObCCF1YwJaAOMKX84l4W',
+    link: 'https://buy.stripe.com/9B6fZg6i1c0n6BIcAgfAc02',
   },
   {
     id: 4,
@@ -39,7 +39,7 @@ const products = [
     price: '€9',
     color: '#34d399',
     type: 'ebook',
-    priceId: 'price_1TYuPLCCF1YwJaAO8rg29dbg',
+    link: 'https://buy.stripe.com/eVq9AS49Te8v2ls0RyfAc03',
   },
   {
     id: 5,
@@ -50,7 +50,7 @@ const products = [
     color: '#34d399',
     type: 'course',
     badge: '⭐ Most Popular',
-    priceId: 'price_1TYuQ3CCF1YwJaAOKARu6EQL',
+    link: 'https://buy.stripe.com/3cIeVc35P3tRd06bwcfAc04',
   },
   {
     id: 6,
@@ -61,37 +61,11 @@ const products = [
     color: '#38bdf8',
     type: 'course',
     badge: '🔥 New',
-    priceId: 'price_1TYuQqCCF1YwJaAOH184fFtv',
+    link: 'https://buy.stripe.com/4gMdR89ud0hFgci6bSfAc05',
   },
 ];
 
 function ShopItem({ item }) {
-  const [loading, setLoading] = useState(false);
-
-  const handleBuy = async () => {
-    setLoading(true);
-    try {
-      const response = await fetch('/api/create-checkout-session', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          priceId: item.priceId,
-          productName: item.title,
-        }),
-      });
-      const data = await response.json();
-      if (data.url) {
-        window.location.href = data.url;
-      } else {
-        alert('Something went wrong. Please try again.');
-      }
-    } catch (err) {
-      alert('Something went wrong. Please try again.');
-    } finally {
-      setLoading(false);
-    }
-  };
-
   return (
     <div style={{
       background: 'rgba(255,255,255,0.04)',
@@ -150,19 +124,21 @@ function ShopItem({ item }) {
         <div style={{ color: item.color, fontWeight: '800', fontSize: '20px' }}>
           {item.price}
         </div>
-        <button
-          onClick={handleBuy}
-          disabled={loading}
+        
+          href={item.link}
+          target="_blank"
+          rel="noopener noreferrer"
           style={{
-            background: loading ? 'rgba(255,255,255,0.08)' : `linear-gradient(135deg, ${item.color}, ${item.color}aa)`,
+            background: `linear-gradient(135deg, ${item.color}, ${item.color}aa)`,
             border: 'none', borderRadius: '10px',
-            color: loading ? '#6b7280' : '#0a0a0f',
-            fontSize: '14px', fontWeight: '800',
-            padding: '8px 20px', cursor: loading ? 'not-allowed' : 'pointer',
+            color: '#0a0a0f', fontSize: '14px',
+            fontWeight: '800', padding: '8px 20px',
+            cursor: 'pointer', textDecoration: 'none',
+            display: 'inline-block',
           }}
         >
-          {loading ? 'Loading...' : 'Get it →'}
-        </button>
+          Get it →
+        </a>
       </div>
     </div>
   );
