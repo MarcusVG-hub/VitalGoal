@@ -10,27 +10,27 @@ const RESEND_API_KEY = process.env.RESEND_API_KEY;
 const EBOOK_MAP = {
   'price_1TYuLHCCF1YwJaAOROvyhW9r': {
     title: 'Hydration Mastery',
-    file: 'ebooks/VitalGoal-Hydration-Mastery.pdf',
+    file: 'VitalGoal-Hydration-Mastery.pdf',
   },
   'price_1TYuNVCCF1YwJaAOgeDuJ6jf': {
     title: 'Sleep Like a Pro',
-    file: 'ebooks/VitalGoal-Sleep-Like-A-Pro.pdf',
+    file: 'VitalGoal-Sleep-Like-A-Pro.pdf',
   },
   'price_1TYuObCCF1YwJaAOMKX84l4W': {
     title: 'Fat Loss Simplified',
-    file: 'ebooks/VitalGoal-Fat-Loss-Simplified.pdf',
+    file: 'VitalGoal-Fat-Loss-Simplified.pdf',
   },
   'price_1TYuPLCCF1YwJaAO8rg29dbg': {
     title: 'Build Muscle at Home',
-    file: 'ebooks/VitalGoal-Build-Muscle-At-Home.pdf',
+    file: 'VitalGoal-Build-Muscle-At-Home.pdf',
   },
   'price_1TYuQ3CCF1YwJaAOKARu6EQL': {
     title: '30 Day Glow Up Challenge',
-    file: 'ebooks/VitalGoal-30-Day-Glow-Up.pdf',
+    file: 'VitalGoal-30-Day-Glow-Up.pdf',
   },
   'price_1TYuQqCCF1YwJaAOH184fFtv': {
     title: 'Mental Clarity Blueprint',
-    file: 'ebooks/VitalGoal-Mental-Clarity-Blueprint.pdf',
+    file: 'VitalGoal-Mental-Clarity-Blueprint.pdf',
   },
 };
 
@@ -54,10 +54,10 @@ module.exports = async (req, res) => {
       return res.status(400).json({ error: 'Product not found' });
     }
 
-    // Generate a signed URL for the ebook (valid for 7 days)
+    // Generate a signed URL valid for 7 days
     const { data, error } = await supabase.storage
       .from('ebooks')
-      .createSignedUrl(product.file.replace('ebooks/', ''), 604800);
+      .createSignedUrl(product.file, 604800);
 
     if (error) {
       console.error('Storage error:', error);
@@ -74,7 +74,7 @@ module.exports = async (req, res) => {
         'Authorization': `Bearer ${RESEND_API_KEY}`,
       },
       body: JSON.stringify({
-        from: 'VitalGoal <delivery@vitalgoal.com>',
+        from: 'VitalGoal <onboarding@resend.dev>',
         to: customerEmail,
         subject: `Your VitalGoal purchase: ${product.title}`,
         html: `
@@ -102,23 +102,23 @@ module.exports = async (req, res) => {
                           font-weight: bold; 
                           font-size: 18px;
                           display: inline-block;">
-                  📥 Download Your Ebook
+                  Download Your Ebook
                 </a>
               </div>
 
               <div style="background: #E8F5EE; border-radius: 10px; padding: 16px; margin: 24px 0;">
-                <p style="color: #1A7A4A; font-weight: bold; margin: 0 0 8px;">⚠️ Important</p>
+                <p style="color: #1A7A4A; font-weight: bold; margin: 0 0 8px;">Important</p>
                 <p style="color: #444; font-size: 14px; margin: 0;">This download link is valid for 7 days. Please save your ebook to your device after downloading.</p>
               </div>
 
               <p style="color: #444; font-size: 15px; line-height: 1.6;">
-                Track your health journey daily with the <strong>VitalGoal app</strong>:
+                Track your health journey daily with the VitalGoal app:
               </p>
               
               <div style="text-align: center; margin: 16px 0 32px;">
-                <a href="https://vital-goal.vercel.app" 
+                <a href="https://getvitalgoal.com" 
                    style="color: #1A7A4A; font-weight: bold; font-size: 15px;">
-                  👉 Open VitalGoal App
+                  Open VitalGoal App
                 </a>
               </div>
 
@@ -126,7 +126,7 @@ module.exports = async (req, res) => {
               
               <p style="color: #888; font-size: 13px; text-align: center;">
                 Questions? Reply to this email and we will help you out.<br/>
-                © 2025 VitalGoal · vitalgoal.com
+                2025 VitalGoal · getvitalgoal.com
               </p>
             </div>
           </div>
