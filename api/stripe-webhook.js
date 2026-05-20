@@ -1,9 +1,12 @@
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 
 module.exports = async (req, res) => {
-  if (req.method !== 'POST') {
-    return res.status(405).json({ error: 'Method not allowed' });
-  }
+  // Handle all methods
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'POST, GET, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, stripe-signature');
+
+  if (req.method === 'OPTIONS') return res.status(200).end();
 
   const sig = req.headers['stripe-signature'];
   const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET;
@@ -19,24 +22,26 @@ module.exports = async (req, res) => {
 
   if (event.type === 'checkout.session.completed') {
     const session = event.data.object;
-
     const customerEmail = session.customer_details?.email;
     const lineItems = await stripe.checkout.sessions.listLineItems(session.id);
     const priceId = lineItems.data[0]?.price?.id;
 
+    console.log('Payment received:', customerEmail, priceId);
+
     if (customerEmail && priceId) {
       try {
-        await fetch(`${process.env.NEXT_PUBLIC_URL}/api/send-ebook`, {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/send-ebook`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ customerEmail, priceId }),
         });
-        console.log(`Ebook sent to ${customerEmail}`);
+        const data = await response.json();
+        console.log('Send ebook response:', data);
       } catch (err) {
         console.error('Error sending ebook:', err);
       }
     }
   }
 
-  res.status(200).json({ received: true });
+  return res.status(200).json({ received: true });
 };
