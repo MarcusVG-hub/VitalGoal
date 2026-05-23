@@ -153,6 +153,110 @@ function AppMockup() {
   );
 }
 
+
+function PricingCards({ onGetStarted }) {
+  const [premiumAnnual, setPremiumAnnual] = React.useState(false);
+  const [aiAnnual, setAiAnnual] = React.useState(false);
+
+  const Toggle = ({ value, onChange }) => (
+    <div style={{ display: 'flex', alignItems: 'center', gap: '8px', justifyContent: 'center', marginBottom: '20px', flexWrap: 'wrap' }}>
+      <span style={{ fontSize: '13px', fontWeight: '600', color: !value ? '#fff' : 'rgba(255,255,255,0.4)' }}>Monthly</span>
+      <div
+        onClick={() => onChange(!value)}
+        style={{
+          width: '44px', height: '24px', borderRadius: '12px',
+          background: value ? '#34D468' : 'rgba(255,255,255,0.2)',
+          cursor: 'pointer', position: 'relative', transition: 'background 0.2s',
+        }}
+      >
+        <div style={{
+          position: 'absolute', top: '3px',
+          left: value ? '23px' : '3px',
+          width: '18px', height: '18px', borderRadius: '50%',
+          background: '#fff', transition: 'left 0.2s',
+        }}/>
+      </div>
+      <span style={{ fontSize: '13px', fontWeight: '600', color: value ? '#fff' : 'rgba(255,255,255,0.4)' }}>Annual</span>
+      <span style={{ background: '#34D468', borderRadius: '20px', padding: '2px 8px', fontSize: '11px', color: '#0D2415', fontWeight: '700' }}>Save 33%</span>
+    </div>
+  );
+
+
+
+  return (
+    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '24px', alignItems: 'stretch' }}>
+
+      {/* Free */}
+      <div style={{ background: '#fff', border: '1px solid rgba(27,122,62,0.15)', borderRadius: '24px', padding: '36px 28px', textAlign: 'left', display: 'flex', flexDirection: 'column' }}>
+        <div style={{ color: '#4A7A5A', fontWeight: '700', fontSize: '13px', letterSpacing: '1px', marginBottom: '12px', textTransform: 'uppercase' }}>Free</div>
+        <div style={{ color: '#1A3322', fontWeight: '700', fontSize: '40px', marginBottom: '4px' }}>€0</div>
+        <div style={{ color: '#4A7A5A', fontSize: '14px', marginBottom: '28px' }}>Forever free</div>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', marginBottom: '28px', flex: 1 }}>
+          {['Full health tracker','Water, steps, sleep, calories, mood','7-day charts and insights','Streak tracking','BMI calculator'].map(f => (
+            <div key={f} style={{ display: 'flex', alignItems: 'flex-start', gap: '10px', color: '#1A3322', fontSize: '14px' }}>
+              <span style={{ color: '#1B7A3E', fontWeight: '700', fontSize: '16px', flexShrink: 0 }}>✓</span>{f}
+            </div>
+          ))}
+        </div>
+        <button onClick={onGetStarted} style={{ width: '100%', background: '#EAF6ED', border: '1px solid rgba(27,122,62,0.15)', borderRadius: '50px', color: '#1B7A3E', fontSize: '15px', fontWeight: '700', padding: '14px', cursor: 'pointer', fontFamily: 'inherit' }}>
+          Get Started Free
+        </button>
+      </div>
+
+      {/* Premium */}
+      <div style={{ background: '#0D2415', border: '2px solid #28A855', borderRadius: '24px', padding: '36px 28px', textAlign: 'left', position: 'relative', overflow: 'hidden', display: 'flex', flexDirection: 'column' }}>
+        <div style={{ position: 'absolute', top: '16px', right: '16px', background: '#28A855', borderRadius: '50px', padding: '4px 12px', color: '#fff', fontSize: '11px', fontWeight: '700' }}>🔥 Popular</div>
+        <div style={{ color: '#34D468', fontWeight: '700', fontSize: '13px', letterSpacing: '1px', marginBottom: '12px', textTransform: 'uppercase' }}>Premium</div>
+        <Toggle value={premiumAnnual} onChange={setPremiumAnnual} />
+        <div style={{ display: 'flex', alignItems: 'baseline', gap: '8px', marginBottom: '4px' }}>
+          <div style={{ color: '#fff', fontWeight: '700', fontSize: '40px' }}>{premiumAnnual ? '€119.99' : '€14.99'}</div>
+          {premiumAnnual && <div style={{ color: 'rgba(255,255,255,0.3)', fontSize: '14px', textDecoration: 'line-through' }}>€179.88</div>}
+        </div>
+        <div style={{ color: 'rgba(255,255,255,0.4)', fontSize: '14px', marginBottom: '28px' }}>
+          {premiumAnnual ? 'per year · €10/mo · 7-day free trial' : 'per month · 7-day free trial'}
+        </div>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', marginBottom: '28px', flex: 1 }}>
+          {['Everything in Free','Unlimited data history','Priority support','10% off all ebooks','Early access to new features','Premium profile badge'].map(f => (
+            <div key={f} style={{ display: 'flex', alignItems: 'flex-start', gap: '10px', color: 'rgba(255,255,255,0.85)', fontSize: '14px' }}>
+              <span style={{ color: '#34D468', fontWeight: '700', fontSize: '16px', flexShrink: 0 }}>✓</span>{f}
+            </div>
+          ))}
+        </div>
+        <a href={premiumAnnual ? 'https://buy.stripe.com/00wfZgbCl4xV8JQ43KfAc08' : 'https://buy.stripe.com/7sYdR85dX7K75xE0RyfAc06'} target="_blank" rel="noopener noreferrer"
+          style={{ display: 'block', width: '100%', background: 'linear-gradient(135deg, #1B7A3E, #28A855)', border: 'none', borderRadius: '50px', color: '#fff', fontSize: '15px', fontWeight: '700', padding: '14px', textDecoration: 'none', textAlign: 'center', boxShadow: '0 8px 32px rgba(27,122,62,0.4)', boxSizing: 'border-box' }}>
+          Start Free Trial →
+        </a>
+      </div>
+
+      {/* Pro + AI */}
+      <div style={{ background: 'linear-gradient(160deg, #0D1F2D 0%, #0D2415 100%)', border: '2px solid rgba(99,179,237,0.4)', borderRadius: '24px', padding: '36px 28px', textAlign: 'left', position: 'relative', overflow: 'hidden', display: 'flex', flexDirection: 'column' }}>
+        <div style={{ position: 'absolute', top: '16px', right: '16px', background: 'rgba(99,179,237,0.15)', border: '1px solid rgba(99,179,237,0.4)', borderRadius: '50px', padding: '4px 12px', color: '#63B3ED', fontSize: '11px', fontWeight: '700' }}>🤖 AI Powered</div>
+        <div style={{ color: '#63B3ED', fontWeight: '700', fontSize: '13px', letterSpacing: '1px', marginBottom: '12px', textTransform: 'uppercase' }}>Pro + AI</div>
+        <Toggle value={aiAnnual} onChange={setAiAnnual} />
+        <div style={{ display: 'flex', alignItems: 'baseline', gap: '8px', marginBottom: '4px' }}>
+          <div style={{ color: '#fff', fontWeight: '700', fontSize: '40px' }}>{aiAnnual ? '€199.99' : '€24.99'}</div>
+          {aiAnnual && <div style={{ color: 'rgba(255,255,255,0.3)', fontSize: '14px', textDecoration: 'line-through' }}>€299.88</div>}
+        </div>
+        <div style={{ color: 'rgba(255,255,255,0.4)', fontSize: '14px', marginBottom: '28px' }}>
+          {aiAnnual ? 'per year · €16.67/mo · 7-day free trial' : 'per month · 7-day free trial'}
+        </div>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', marginBottom: '28px', flex: 1 }}>
+          {['Everything in Premium','🤖 AI Health Assistant chat','📊 AI weekly health report','🎯 Personalised daily recommendations','💬 AI meal and workout suggestions','⚡ Fastest priority support'].map(f => (
+            <div key={f} style={{ display: 'flex', alignItems: 'flex-start', gap: '10px', color: 'rgba(255,255,255,0.85)', fontSize: '14px' }}>
+              <span style={{ color: '#63B3ED', fontWeight: '700', fontSize: '16px', flexShrink: 0 }}>✓</span>{f}
+            </div>
+          ))}
+        </div>
+        <a href="https://getvitalgoal.com" target="_blank" rel="noopener noreferrer"
+          style={{ display: 'block', width: '100%', background: 'linear-gradient(135deg, #2B6CB0, #63B3ED)', border: 'none', borderRadius: '50px', color: '#fff', fontSize: '15px', fontWeight: '700', padding: '14px', textDecoration: 'none', textAlign: 'center', boxShadow: '0 8px 32px rgba(99,179,237,0.3)', boxSizing: 'border-box' }}>
+          Coming Soon
+        </a>
+      </div>
+
+    </div>
+  );
+}
+
 function Landing({ onGetStarted }) {
   const [openFaq, setOpenFaq] = useState(null);
   const [showContact, setShowContact] = useState(false);
@@ -185,17 +289,17 @@ function Landing({ onGetStarted }) {
         <div style={{ position:'relative', zIndex:1, maxWidth:'780px', margin:'0 auto' }}>
           <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', background: C.white, border: `1px solid ${C.border}`, borderRadius: '50px', padding: '8px 20px', marginBottom: '40px', boxShadow: `0 2px 16px ${C.green}14` }}>
             <span style={{ fontSize: '16px' }}>🌿</span>
-            <span style={{ color: C.green, fontSize: '14px', fontWeight: '600' }}>Your daily health companion</span>
+            <span style={{ color: C.green, fontSize: '14px', fontWeight: '600' }}>Built by someone who actually uses it</span>
           </div>
 
           <h1 style={{ fontSize: 'clamp(40px, 6vw, 76px)', fontWeight: '700', lineHeight: '1.08', letterSpacing: '-2px', color: C.dark, margin: '0 0 28px' }}>
-            Track 5 health habits<br />
-            <span style={{ background: `linear-gradient(135deg, ${C.green} 0%, ${C.green2} 60%, ${C.green3} 100%)`, WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>in 30 seconds a day.</span>
+            Track your health.<br />
+            Read the science.<br />
+            <span style={{ background: `linear-gradient(135deg, ${C.green} 0%, ${C.green2} 60%, ${C.green3} 100%)`, WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>Become your best self.</span>
           </h1>
 
           <p style={{ color: C.muted, fontSize: 'clamp(17px, 2vw, 21px)', lineHeight: '1.65', maxWidth: '560px', margin: '0 auto 48px', fontWeight: '500' }}>
-            Water, sleep, steps, calories and mood — all in one beautiful free app.
-            Plus science-backed ebooks that actually change your habits.
+            Most health apps waste your time. VitalGoal lets you log your water, sleep, steps, calories and mood in seconds — then gets out of your day. No complicated menus. No confusion. Just done.
           </p>
 
           <div style={{ display: 'flex', gap: '16px', justifyContent: 'center', flexWrap: 'wrap', marginBottom: '48px' }}>
@@ -296,6 +400,27 @@ function Landing({ onGetStarted }) {
               </div>
             ))}
           </div>
+        </div>
+      </section>
+
+
+      {/* PRICING */}
+      <section style={{ padding: '120px 48px', background: C.bg }}>
+        <div style={{ maxWidth: '900px', margin: '0 auto', textAlign: 'center' }}>
+          <div style={{ display: 'inline-block', background: C.greenSoft, borderRadius: '50px', padding: '6px 20px', marginBottom: '24px', color: C.green, fontSize: '14px', fontWeight: '600' }}>💚 Pricing</div>
+          <h2 style={{ fontSize: 'clamp(32px, 4vw, 52px)', fontWeight: '700', letterSpacing: '-1.5px', color: C.dark, margin: '0 0 20px' }}>
+            Choose your plan.<br />
+            <span style={{ background: `linear-gradient(135deg, ${C.green}, ${C.green3})`, WebkitBackgroundClip:'text', WebkitTextFillColor:'transparent' }}>Cancel anytime.</span>
+          </h2>
+          <p style={{ color: C.muted, fontSize: '18px', lineHeight: '1.65', maxWidth: '520px', margin: '0 auto 56px', fontWeight: '500' }}>
+            Start with a 7-day free trial on all paid plans. No credit card needed until your trial ends.
+          </p>
+
+          <PricingCards onGetStarted={onGetStarted} />
+
+          <p style={{ color: C.muted, fontSize: '14px', marginTop: '40px' }}>
+            🔒 Secure payment via Stripe · Cancel anytime · 7-day free trial on all plans
+          </p>
         </div>
       </section>
 
@@ -423,6 +548,51 @@ function Landing({ onGetStarted }) {
         </div>
       </section>
 
+
+      {/* FOUNDER */}
+      <section style={{ padding: '100px 48px', background: C.white }}>
+        <div style={{ maxWidth: '720px', margin: '0 auto' }}>
+          <div style={{ display: 'inline-block', background: C.greenSoft, borderRadius: '50px', padding: '6px 20px', marginBottom: '32px', color: C.green, fontSize: '14px', fontWeight: '600' }}>👋 Why I built this</div>
+          <div style={{ display: 'flex', gap: '32px', alignItems: 'flex-start', flexWrap: 'wrap' }}>
+            <div style={{ flex: '1', minWidth: '280px' }}>
+              <h2 style={{ fontSize: 'clamp(26px, 3vw, 38px)', fontWeight: '700', letterSpacing: '-1px', color: C.dark, margin: '0 0 24px', lineHeight: '1.2' }}>
+                "I just wanted something<br />
+                <span style={{ background: `linear-gradient(135deg, ${C.green}, ${C.green3})`, WebkitBackgroundClip:'text', WebkitTextFillColor:'transparent' }}>simple that works."</span>
+              </h2>
+              <p style={{ color: C.muted, fontSize: '17px', lineHeight: '1.75', margin: '0 0 20px' }}>
+                I'm Marcus. I'm in my early twenties and I built VitalGoal because I couldn't find a health app that respected my time.
+              </p>
+              <p style={{ color: C.muted, fontSize: '17px', lineHeight: '1.75', margin: '0 0 20px' }}>
+                Every app I tried was either too complicated, too slow, or buried the things I actually needed. I just wanted to log my water and steps in under 10 seconds and move on with my day.
+              </p>
+              <p style={{ color: C.muted, fontSize: '17px', lineHeight: '1.75', margin: '0 0 32px' }}>
+                So I built it myself. No fluff. No wasted time. Just the habits that actually matter, tracked as fast as possible.
+              </p>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
+                <div style={{ width: '48px', height: '48px', borderRadius: '50%', background: C.greenSoft, border: `2px solid ${C.green}33`, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '20px', fontWeight: '700', color: C.green }}>M</div>
+                <div>
+                  <div style={{ color: C.dark, fontWeight: '700', fontSize: '16px' }}>Marcus</div>
+                  <div style={{ color: C.muted, fontSize: '13px' }}>Founder, VitalGoal</div>
+                </div>
+              </div>
+            </div>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', minWidth: '200px' }}>
+              {[
+                { num: '30s', label: 'to log your entire day' },
+                { num: '6', label: 'science-backed ebooks' },
+                { num: '5', label: 'health metrics tracked' },
+                { num: '0', label: 'wasted time' },
+              ].map(s => (
+                <div key={s.label} style={{ background: C.bgAlt, border: `1px solid ${C.border}`, borderRadius: '16px', padding: '20px 24px' }}>
+                  <div style={{ color: C.green, fontWeight: '700', fontSize: '32px', lineHeight: '1' }}>{s.num}</div>
+                  <div style={{ color: C.muted, fontSize: '14px', marginTop: '4px' }}>{s.label}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* CTA */}
       <section style={{ padding: '120px 48px', textAlign: 'center', background: C.dark, position: 'relative', overflow: 'hidden' }}>
         <svg style={{ position:'absolute', inset:0, width:'100%', height:'100%', pointerEvents:'none' }} preserveAspectRatio="xMidYMid slice">
@@ -433,11 +603,11 @@ function Landing({ onGetStarted }) {
         <div style={{ maxWidth: '680px', margin: '0 auto', position: 'relative', zIndex: 1 }}>
           <div style={{ display: 'inline-block', background: 'rgba(52,212,104,0.12)', borderRadius: '50px', padding: '6px 20px', marginBottom: '32px', color: C.green3, fontSize: '14px', fontWeight: '600' }}>🌿 Start your journey</div>
           <h2 style={{ fontSize: 'clamp(36px, 5vw, 60px)', fontWeight: '700', letterSpacing: '-2px', color: C.white, margin: '0 0 24px', lineHeight: '1.1' }}>
-            Your healthiest life<br />
-            <span style={{ background: `linear-gradient(135deg, ${C.green3}, ${C.green2})`, WebkitBackgroundClip:'text', WebkitTextFillColor:'transparent' }}>starts today.</span>
+            Track your health.<br />Read the science.<br />
+            <span style={{ background: `linear-gradient(135deg, ${C.green3}, ${C.green2})`, WebkitBackgroundClip:'text', WebkitTextFillColor:'transparent' }}>Become your best self.</span>
           </h2>
           <p style={{ color: 'rgba(255,255,255,0.5)', fontSize: '18px', lineHeight: '1.65', marginBottom: '48px', fontWeight: '500' }}>
-            Free to start. Simple to use. Life-changing to stick with.
+            The all-in-one health toolkit for people serious about improving their life. Free to start. Life-changing to stick with.
           </p>
           <button onClick={onGetStarted} style={{ background: `linear-gradient(135deg, ${C.green2}, ${C.green3})`, border: 'none', borderRadius: '50px', color: C.white, fontSize: '18px', fontWeight: '600', padding: '18px 48px', cursor: 'pointer', boxShadow: `0 8px 40px ${C.green}50` }}>Start Free Today →</button>
         </div>
