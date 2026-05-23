@@ -9,6 +9,7 @@ import Tracker from './pages/Tracker';
 import Shop from './pages/Shop';
 import Profile from './pages/Profile';
 import Auth from './pages/Auth';
+import Landing from './Landing';
 
 // ── Onboarding ──────────────────────────────────────
 function Onboarding({ onDone }) {
@@ -155,6 +156,7 @@ export default function App() {
   const [tab, setTab] = useState('dashboard');
   const [toast, setToast] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [showLanding, setShowLanding] = useState(true);
 
   // Check if user is logged in
   useEffect(() => {
@@ -173,7 +175,6 @@ export default function App() {
     return () => subscription.unsubscribe();
   }, []);
 
-  // Load all user data from Supabase
   const loadUserData = async (userId) => {
     setLoading(true);
     try {
@@ -199,7 +200,6 @@ export default function App() {
     setTimeout(() => setToast(null), 2500);
   };
 
-  // Save log entry
   const handleSaveLog = async (date, logData) => {
     const td = todayStr();
     const updatedLogs = { ...state.logs, [date]: logData };
@@ -221,7 +221,6 @@ export default function App() {
     }
   };
 
-  // Save profile
   const handleSaveProfile = async (profile) => {
     setState(s => ({ ...s, profile }));
     try {
@@ -232,7 +231,6 @@ export default function App() {
     }
   };
 
-  // Handle onboarding done
   const handleOnboardingDone = async (profile) => {
     setState(s => ({ ...s, profile }));
     try {
@@ -242,11 +240,11 @@ export default function App() {
     }
   };
 
-  // Handle sign out
   const handleSignOut = async () => {
     await signOut();
     setState({ ...DEFAULT_STATE });
     setTab('dashboard');
+    setShowLanding(true);
   };
 
   // Loading screen
@@ -262,13 +260,16 @@ export default function App() {
           background: 'linear-gradient(135deg, #34d399, #38bdf8)',
           WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent',
         }}>⚡ VitalGoal</div>
-        <div style={{ color: '#6b7280', fontSize: '14px' }}>Loading your data...</div>
+        <div style={{ color: '#6b7280', fontSize: '14px' }}>Loading...</div>
       </div>
     );
   }
 
-  // Not logged in — show auth screen
+  // Not logged in — show landing or auth
   if (!user) {
+    if (showLanding) {
+      return <Landing onGetStarted={() => setShowLanding(false)} />;
+    }
     return <Auth onAuth={() => {}} />;
   }
 
@@ -323,7 +324,6 @@ export default function App() {
   );
 }
 
-// ── Onboarding input style ──
 const obInput = {
   width: '100%',
   background: 'rgba(255,255,255,0.06)',
