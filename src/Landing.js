@@ -319,7 +319,7 @@ function PricingCards({ onGetStarted }) {
           {premiumAnnual ? 'per year · €10/mo · 7-day free trial' : 'per month · 7-day free trial'}
         </div>
         <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', marginBottom: '28px', flex: 1 }}>
-          {['Everything in Free','Unlimited data history','Priority support','10% off all ebooks','Early access to new features','Premium profile badge'].map(f => (
+          {['Everything in Free','Unlimited data history','Priority support','10% off all guides','Early access to new features','Premium profile badge'].map(f => (
             <div key={f} style={{ display: 'flex', alignItems: 'flex-start', gap: '10px', color: 'rgba(255,255,255,0.85)', fontSize: '14px' }}>
               <span style={{ color: '#34D468', fontWeight: '700', fontSize: '16px', flexShrink: 0 }}>✓</span>{f}
             </div>
@@ -410,7 +410,7 @@ function Landing({ onGetStarted }) {
 
           <div style={{ display: 'flex', gap: '12px', justifyContent: 'center', flexWrap: 'wrap', marginBottom: '48px' }}>
             <button onClick={onGetStarted} style={{ background: `linear-gradient(135deg, ${C.green}, ${C.green2})`, border: 'none', borderRadius: '50px', color: C.white, fontSize: '17px', fontWeight: '600', padding: '16px 40px', cursor: 'pointer', boxShadow: `0 8px 32px ${C.green}40` }}>Start Tracking Free →</button>
-            <a href="#shop" style={{ background: C.white, border: `1.5px solid ${C.border}`, borderRadius: '50px', color: C.green, fontSize: '17px', fontWeight: '600', padding: '16px 40px', textDecoration: 'none', boxShadow: '0 4px 16px rgba(0,0,0,0.06)' }}>Browse Ebooks</a>
+            <a href="#shop" style={{ background: C.white, border: `1.5px solid ${C.border}`, borderRadius: '50px', color: C.green, fontSize: '17px', fontWeight: '600', padding: '16px 40px', textDecoration: 'none', boxShadow: '0 4px 16px rgba(0,0,0,0.06)' }}>Browse Guides</a>
           </div>
 
           <div style={{ display: 'flex', gap: '12px', justifyContent: 'center', flexWrap: 'wrap' }}>
@@ -430,7 +430,7 @@ function Landing({ onGetStarted }) {
       <section style={{ background: C.green, padding: '24px clamp(16px, 4vw, 48px)' }}>
         <div style={{ maxWidth: '900px', margin: '0 auto', display: 'flex', justifyContent: 'center', flexWrap: 'wrap', gap: '24px 40px', textAlign: 'center' }}>
           {[
-            ['6', 'Health Ebooks'],
+            ['6', 'Health Guides'],
             ['5', 'Daily Metrics'],
             ['100%', 'Free App'],
             ['0', 'Subscriptions'],
@@ -486,7 +486,7 @@ function Landing({ onGetStarted }) {
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '20px', textAlign: 'left' }}>
             {[
               { name: 'Sarah M.', age: '28', quote: "I've tried every health app out there. VitalGoal is the only one I actually stuck with. The daily streak feature alone changed everything for me.", stars: 5 },
-              { name: 'James K.', age: '34', quote: "The Sleep Like a Pro ebook genuinely fixed my sleep in two weeks. I was sceptical but the science is solid and the advice actually works.", stars: 5 },
+              { name: 'James K.', age: '34', quote: "The Sleep Like a Pro guide genuinely fixed my sleep in two weeks. I was sceptical but the science is solid and the advice actually works.", stars: 5 },
               { name: 'Priya R.', age: '25', quote: "So simple. I log everything in under a minute every morning. After 30 days I could actually see my habits improving in the charts. Love it.", stars: 5 },
             ].map(t => (
               <div key={t.name} className="hover-lift" style={{ background: C.white, border: `1px solid ${C.border}`, borderRadius: '20px', padding: '28px', boxShadow: '0 4px 20px rgba(27,122,62,0.06)' }}>
@@ -544,7 +544,7 @@ function Landing({ onGetStarted }) {
             <span style={{ background: `linear-gradient(135deg, ${C.green}, ${C.green3})`, WebkitBackgroundClip:'text', WebkitTextFillColor:'transparent' }}>Real results.</span>
           </h2>
           <p style={{ color: C.muted, fontSize: '18px', lineHeight: '1.65', maxWidth: '520px', margin: '0 auto 72px', fontWeight: '500' }}>
-            No fads. No fluff. Just clear, practical ebooks grounded in peer-reviewed research.
+            No fads. No fluff. Just clear, practical guides grounded in peer-reviewed research.
           </p>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(310px, 1fr))', gap: '20px', textAlign: 'left' }}>
             {[
@@ -563,7 +563,7 @@ function Landing({ onGetStarted }) {
                   <div style={{ width:'52px', height:'52px', borderRadius:'14px', background: e.isPremium ? C.goldSoft : C.greenSoft, display:'flex', alignItems:'center', justifyContent:'center', fontSize:'26px', flexShrink:0 }}>{e.emoji}</div>
                   <div>
                     <div style={{ color: C.dark, fontWeight: '700', fontSize: '16px' }}>{e.title}</div>
-                    <div style={{ color: C.muted, fontSize: '13px', marginTop: '2px' }}>📄 Ebook</div>
+                    <div style={{ color: C.muted, fontSize: '13px', marginTop: '2px' }}>📄 Guide</div>
                   </div>
                 </div>
                 <p style={{ color: C.muted, fontSize: '14px', lineHeight: '1.6', flex: 1, margin: '0 0 20px' }}>{e.desc}</p>
@@ -590,10 +590,10 @@ function Landing({ onGetStarted }) {
           </p>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '24px' }}>
             {[
-              { icon:'🚫', title:'No Subscriptions',  desc:'The app is free. Ebooks are one-time purchases. No recurring charges. Ever.' },
+              { icon:'🚫', title:'No Subscriptions',  desc:'The app is free. Guides are one-time purchases. No recurring charges. Ever.' },
               { icon:'🔒', title:'Your Data is Yours', desc:'We never sell your data, show ads or share your information with anyone.' },
               { icon:'📱', title:'Works Everywhere',   desc:'Works on any phone, tablet or computer instantly. No app store needed.' },
-              { icon:'🧬', title:'Science-Backed',     desc:'Every ebook is grounded in peer-reviewed research, not trends.' },
+              { icon:'🧬', title:'Science-Backed',     desc:'Every guide is grounded in peer-reviewed research, not trends.' },
             ].map(w => (
               <div key={w.title} className="hover-lift" style={{ background: C.white, border: `1px solid ${C.border}`, borderRadius: '20px', padding: '32px 24px', textAlign: 'center', boxShadow: '0 4px 16px rgba(27,122,62,0.06)' }}>
                 <div style={{ width:'60px', height:'60px', borderRadius:'18px', background: C.greenSoft, display:'flex', alignItems:'center', justifyContent:'center', fontSize:'28px', margin:'0 auto 20px' }}>{w.icon}</div>
@@ -615,11 +615,11 @@ function Landing({ onGetStarted }) {
           <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', textAlign: 'left' }}>
             {[
               { q: 'Is the app really free?', a: 'Yes, completely. The VitalGoal health tracker app is free to use with no hidden charges, no premium tier and no subscription. Create an account and start tracking today.' },
-              { q: 'How do I get my ebook after buying?', a: 'Instantly. As soon as your payment is confirmed, Stripe sends an automatic email with a secure download link to the address you used at checkout. No waiting, no manual delivery.' },
+              { q: 'How do I get my guide after buying?', a: 'Instantly. As soon as your payment is confirmed, Stripe sends an automatic email with a secure download link to the address you used at checkout. No waiting, no manual delivery.' },
               { q: 'Does the app work on my phone?', a: 'Yes. VitalGoal works in any modern browser on iPhone, Android, or any computer. Just visit getvitalgoal.com and sign up. No app store download required.' },
-              { q: 'Can I use the app without buying an ebook?', a: 'Absolutely. The app and the ebooks are completely separate. The app is free forever. The ebooks are optional guides if you want deeper knowledge on specific topics.' },
+              { q: 'Can I use the app without buying an guide?', a: 'Absolutely. The app and the guides are completely separate. The app is free forever. The guides are optional guides if you want deeper knowledge on specific topics.' },
               { q: 'Is my health data private?', a: 'Yes. Your data is stored securely in your own account and is never shared, sold or used for advertising. You can delete your account and all data at any time.' },
-              { q: 'What if I want a refund?', a: 'Due to the digital nature of our products, all sales are final. Once an ebook has been delivered we are unable to offer refunds. If you have any issues accessing your purchase, contact us at hello@getvitalgoal.com and we will help you out.' },
+              { q: 'What if I want a refund?', a: 'Due to the digital nature of our products, all sales are final. Once an guide has been delivered we are unable to offer refunds. If you have any issues accessing your purchase, contact us at hello@getvitalgoal.com and we will help you out.' },
             ].map((f, i) => (
               <div key={i} className="faq-item" style={{ border: `1px solid ${C.border}`, borderRadius: '16px', overflow: 'hidden', background: C.bg }}>
                 <button
@@ -685,7 +685,7 @@ function Landing({ onGetStarted }) {
             <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', minWidth: '200px' }}>
               {[
                 { num: '30s', label: 'to log your entire day' },
-                { num: '6', label: 'science-backed ebooks' },
+                { num: '6', label: 'science-backed guides' },
                 { num: '5', label: 'health metrics tracked' },
                 { num: '0', label: 'wasted time' },
               ].map(s => (

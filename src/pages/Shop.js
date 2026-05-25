@@ -36,7 +36,7 @@ function ShopItem({ item }) {
         <div style={{ width: '48px', height: '48px', borderRadius: '14px', background: item.bg, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '24px', flexShrink: 0 }}>{item.emoji}</div>
         <div>
           <div style={{ color: C.dark, fontWeight: '700', fontSize: '15px' }}>{item.title}</div>
-          <div style={{ color: C.muted, fontSize: '12px' }}>📄 Ebook</div>
+          <div style={{ color: C.muted, fontSize: '12px' }}>📄 Guide</div>
         </div>
       </div>
       <div style={{ color: C.muted, fontSize: '13px', lineHeight: '1.5' }}>{item.desc}</div>
@@ -60,7 +60,7 @@ function Shop() {
       <div style={{ background: `linear-gradient(135deg, ${C.green}, ${C.green2})`, borderRadius: '20px', padding: '20px', textAlign: 'center', boxShadow: `0 8px 32px rgba(27,122,62,0.3)` }}>
         <div style={{ fontSize: '28px', marginBottom: '8px' }}>📚</div>
         <div style={{ color: '#fff', fontWeight: '800', fontSize: '20px' }}>VitalGoal Shop</div>
-        <div style={{ color: 'rgba(255,255,255,0.7)', fontSize: '13px', marginTop: '6px' }}>Science-backed ebooks to help you reach your goals faster</div>
+        <div style={{ color: 'rgba(255,255,255,0.7)', fontSize: '13px', marginTop: '6px' }}>Science-backed guides to help you reach your goals faster</div>
       </div>
       <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
         {products.map(p => <ShopItem key={p.id} item={p}/>)}
