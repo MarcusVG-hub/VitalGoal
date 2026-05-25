@@ -1,174 +1,149 @@
 import React from 'react';
-import { calcBMI, bmiLabel, last7Days, GOALS, clamp } from '../data/storage';
+import { todayStr } from '../data/storage';
 
-function Ring({ pct, size, stroke, color, children }) {
-  const r = (size - stroke) / 2;
+const C = {
+  bg: '#F5FBF6', bgAlt: '#EAF6ED', white: '#FFFFFF',
+  green: '#1B7A3E', green2: '#28A855', green3: '#34D468',
+  greenSoft: '#D4F5E0', dark: '#0D2415', text: '#1A3322',
+  muted: '#4A7A5A', border: 'rgba(27,122,62,0.12)',
+  shadow: '0 2px 16px rgba(27,122,62,0.08)',
+};
+
+const metrics = [
+  { key: 'water',    icon: '💧', label: 'Water',    unit: 'glasses', goal: 8,    color: '#0284C7', bg: '#E0F2FE' },
+  { key: 'steps',    icon: '🚶', label: 'Steps',    unit: 'steps',   goal: 10000, color: '#1B7A3E', bg: '#D4F5E0' },
+  { key: 'sleep',    icon: '😴', label: 'Sleep',    unit: 'hours',   goal: 8,    color: '#7C3AED', bg: '#EDE9FE' },
+  { key: 'calories', icon: '🔥', label: 'Calories', unit: 'kcal',    goal: 2000, color: '#EA580C', bg: '#FFEDD5' },
+  { key: 'mood',     icon: '😊', label: 'Mood',     unit: '/5',      goal: 5,    color: '#DB2777', bg: '#FCE7F3' },
+  { key: 'weight',   icon: '⚖️', label: 'Weight',   unit: 'kg',      goal: null, color: '#B5883A', bg: '#FEF3C7' },
+];
+
+function Ring({ pct, color, size = 56 }) {
+  const r = (size - 8) / 2;
   const circ = 2 * Math.PI * r;
-  const offset = circ - (clamp(pct, 0, 100) / 100) * circ;
+  const offset = circ * (1 - Math.min(pct, 1));
   return (
-    <div style={{ position: 'relative', width: size, height: size, flexShrink: 0 }}>
-      <svg width={size} height={size} style={{ transform: 'rotate(-90deg)', display: 'block' }}>
-        <circle cx={size/2} cy={size/2} r={r} fill="none" stroke="rgba(255,255,255,0.08)" strokeWidth={stroke}/>
-        <circle cx={size/2} cy={size/2} r={r} fill="none" stroke={color} strokeWidth={stroke}
-          strokeDasharray={circ} strokeDashoffset={offset} strokeLinecap="round"
-          style={{ transition: 'stroke-dashoffset 0.7s cubic-bezier(.34,1.56,.64,1)' }}/>
-      </svg>
-      <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-        {children}
+    <svg width={size} height={size} style={{ transform: 'rotate(-90deg)' }}>
+      <circle cx={size/2} cy={size/2} r={r} fill="none" stroke="rgba(0,0,0,0.06)" strokeWidth="5"/>
+      <circle cx={size/2} cy={size/2} r={r} fill="none" stroke={color} strokeWidth="5"
+        strokeDasharray={circ} strokeDashoffset={offset} strokeLinecap="round"
+        style={{ transition: 'stroke-dashoffset 0.6s cubic-bezier(0.22,1,0.36,1)' }}/>
+    </svg>
+  );
+}
+
+function MetricCard({ m, value }) {
+  const pct = m.goal ? value / m.goal : 0;
+  const display = value || 0;
+  return (
+    <div style={{
+      background: C.white, borderRadius: '16px',
+      padding: '16px', border: `1px solid ${C.border}`,
+      boxShadow: C.shadow, display: 'flex',
+      flexDirection: 'column', gap: '10px',
+      transition: 'transform 0.2s, box-shadow 0.2s',
+    }}
+    onMouseEnter={e => { e.currentTarget.style.transform = 'translateY(-2px)'; e.currentTarget.style.boxShadow = '0 8px 24px rgba(27,122,62,0.12)'; }}
+    onMouseLeave={e => { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = C.shadow; }}
+    >
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <div style={{ width: '32px', height: '32px', borderRadius: '10px', background: m.bg, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '16px' }}>{m.icon}</div>
+          <div style={{ color: C.muted, fontSize: '13px', fontWeight: '600' }}>{m.label}</div>
+        </div>
+        {m.goal && <Ring pct={pct} color={m.color} size={44}/>}
       </div>
+      <div>
+        <span style={{ color: m.color, fontWeight: '800', fontSize: '22px' }}>{display}</span>
+        <span style={{ color: C.muted, fontSize: '13px', marginLeft: '4px' }}>{m.unit}</span>
+        {m.goal && <div style={{ color: C.muted, fontSize: '11px', marginTop: '2px' }}>Goal: {m.goal.toLocaleString()}</div>}
+      </div>
+      {m.goal && (
+        <div style={{ height: '4px', borderRadius: '2px', background: 'rgba(0,0,0,0.06)' }}>
+          <div style={{ height: '100%', borderRadius: '2px', background: m.color, width: `${Math.min(pct * 100, 100)}%`, transition: 'width 0.6s cubic-bezier(0.22,1,0.36,1)' }}/>
+        </div>
+      )}
     </div>
   );
 }
 
-function MiniBar({ values, color, max }) {
-  const peak = Math.max(...values, max || 1);
+function WeekChart({ logs }) {
+  const days = Array.from({ length: 7 }, (_, i) => {
+    const d = new Date(); d.setDate(d.getDate() - (6 - i));
+    const key = d.toISOString().split('T')[0];
+    const s = d.toLocaleDateString('en', { weekday: 'short' })[0];
+    return { key, short: s, steps: logs[key]?.steps || 0 };
+  });
+  const max = Math.max(...days.map(d => d.steps), 1);
   return (
-    <div style={{ display: 'flex', alignItems: 'flex-end', gap: '3px', height: '48px' }}>
-      {values.map((v, i) => (
-        <div key={i} style={{ flex: 1, display: 'flex', alignItems: 'flex-end' }}>
-          <div style={{
-            width: '100%',
-            height: `${clamp((v / peak) * 44, v > 0 ? 3 : 0, 44)}px`,
-            background: color,
-            opacity: i === values.length - 1 ? 1 : 0.4,
-            borderRadius: '3px',
-            transition: 'height 0.4s cubic-bezier(.34,1.56,.64,1)',
-          }}/>
-        </div>
-      ))}
+    <div style={{ background: C.white, borderRadius: '16px', padding: '20px', border: `1px solid ${C.border}`, boxShadow: C.shadow }}>
+      <div style={{ color: C.text, fontWeight: '700', fontSize: '15px', marginBottom: '16px' }}>📈 7-Day Steps</div>
+      <div style={{ display: 'flex', alignItems: 'flex-end', gap: '6px', height: '80px' }}>
+        {days.map((d, i) => {
+          const isToday = d.key === todayStr();
+          const h = Math.max((d.steps / max) * 100, 4);
+          return (
+            <div key={i} style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '6px', height: '100%', justifyContent: 'flex-end' }}>
+              <div style={{ width: '100%', borderRadius: '6px 6px 0 0', background: isToday ? C.green2 : C.greenSoft, height: `${h}%`, transition: 'height 0.5s ease' }}/>
+              <div style={{ fontSize: '11px', fontWeight: '700', color: isToday ? C.green : C.muted }}>{d.short}</div>
+            </div>
+          );
+        })}
+      </div>
     </div>
   );
 }
 
 function Dashboard({ state, onTabChange }) {
-  const log = state.logs[new Date().toISOString().split('T')[0]] || {};
-  const days = last7Days();
-  const l7 = days.map(d => state.logs[d] || {});
-  const bmi = calcBMI(state.profile.height, state.profile.weight);
-
-  const metrics = [
-    { label: 'Water',    value: log.water    || 0, goal: GOALS.water,    unit: 'glasses', color: '#38bdf8', icon: '💧', arr: l7.map(d => d.water    || 0) },
-    { label: 'Steps',    value: log.steps    || 0, goal: GOALS.steps,    unit: 'steps',   color: '#34d399', icon: '🚶', arr: l7.map(d => d.steps    || 0) },
-    { label: 'Sleep',    value: log.sleep    || 0, goal: GOALS.sleep,    unit: 'hrs',     color: '#a78bfa', icon: '😴', arr: l7.map(d => d.sleep    || 0) },
-    { label: 'Calories', value: log.calories || 0, goal: GOALS.calories, unit: 'kcal',    color: '#fb923c', icon: '🔥', arr: l7.map(d => d.calories || 0) },
-  ];
+  const today = state.logs[todayStr()] || {};
+  const { current = 0, best = 0 } = state.streaks || {};
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
+    <div className="page-enter" style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
 
-      {/* Today's overview */}
-      <div style={card}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
-          <div style={cardTitle}>Today's Overview</div>
-          <div style={{ color: '#9ca3af', fontSize: '13px' }}>
-            {new Date().toLocaleDateString('en-US', { weekday: 'long', month: 'short', day: 'numeric' })}
-          </div>
+      {/* Streak banner */}
+      <div style={{ background: `linear-gradient(135deg, ${C.green}, ${C.green2})`, borderRadius: '20px', padding: '20px', color: '#fff', display: 'flex', justifyContent: 'space-between', alignItems: 'center', boxShadow: `0 8px 32px rgba(27,122,62,0.3)` }}>
+        <div>
+          <div style={{ fontSize: '13px', opacity: 0.8, fontWeight: '600', marginBottom: '4px' }}>Current streak</div>
+          <div style={{ fontSize: '36px', fontWeight: '800', lineHeight: 1 }}>🔥 {current} days</div>
+          <div style={{ fontSize: '12px', opacity: 0.7, marginTop: '4px' }}>Best: {best} days</div>
         </div>
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
-          {metrics.map(m => (
-            <div key={m.label} style={metricCard}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
-                <Ring pct={(m.value / m.goal) * 100} size={52} stroke={5} color={m.color}>
-                  <span style={{ fontSize: '14px' }}>{m.icon}</span>
-                </Ring>
-                <div>
-                  <div style={{ color: '#fff', fontWeight: '700', fontSize: '16px' }}>{m.value.toLocaleString()}</div>
-                  <div style={{ color: '#6b7280', fontSize: '11px' }}>/ {m.goal.toLocaleString()} {m.unit}</div>
-                </div>
-              </div>
-              <div style={{ color: '#9ca3af', fontSize: '12px', marginBottom: '4px' }}>{m.label} · 7-day</div>
-              <MiniBar values={m.arr} color={m.color} max={m.goal} />
-            </div>
-          ))}
-        </div>
+        <button onClick={() => onTabChange('tracker')} style={{ background: 'rgba(255,255,255,0.2)', border: '1.5px solid rgba(255,255,255,0.4)', borderRadius: '50px', color: '#fff', fontSize: '13px', fontWeight: '700', padding: '10px 18px', cursor: 'pointer' }}>
+          Log Today →
+        </button>
       </div>
 
-      {/* Stats row */}
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '10px' }}>
-        {[
-          { icon: '🔥', value: state.streaks.current, label: 'day streak' },
-          { icon: '🏆', value: state.streaks.best,    label: 'best streak' },
-          { icon: '⚖️', value: bmi || '—',            label: bmiLabel(bmi) },
-        ].map((s, i) => (
-          <div key={i} style={statChip}>
-            <div style={{ fontSize: '22px' }}>{s.icon}</div>
-            <div style={{ color: '#fff', fontWeight: '700', fontSize: '18px' }}>{s.value}</div>
-            <div style={{ color: '#6b7280', fontSize: '11px' }}>{s.label}</div>
-          </div>
+      {/* Metrics grid */}
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
+        {metrics.filter(m => m.key !== 'weight').map(m => (
+          <MetricCard key={m.key} m={m} value={today[m.key] || 0}/>
         ))}
       </div>
 
-      {/* Mood */}
-      {log.mood && (
-        <div style={{ ...card, display: 'flex', alignItems: 'center', gap: '12px' }}>
-          <div style={{ fontSize: '32px' }}>{['😞','😐','🙂','😄','🤩'][log.mood - 1]}</div>
+      {/* Weight */}
+      <div style={{ background: C.white, borderRadius: '16px', padding: '16px', border: `1px solid ${C.border}`, boxShadow: C.shadow, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+          <div style={{ width: '36px', height: '36px', borderRadius: '10px', background: '#FEF3C7', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '18px' }}>⚖️</div>
           <div>
-            <div style={{ color: '#fff', fontWeight: '600' }}>Today's Mood</div>
-            <div style={{ color: '#6b7280', fontSize: '13px' }}>{['Rough','Okay','Good','Great','Amazing!'][log.mood - 1]}</div>
+            <div style={{ color: C.muted, fontSize: '13px', fontWeight: '600' }}>Weight</div>
+            <div style={{ color: '#B5883A', fontWeight: '800', fontSize: '20px' }}>{today.weight || '—'} <span style={{ color: C.muted, fontSize: '13px', fontWeight: '500' }}>kg</span></div>
           </div>
         </div>
-      )}
-
-      {/* Quick log button */}
-      <button onClick={() => onTabChange('tracker')} style={btnPrimary}>
-        ✏️ Log Today's Data
-      </button>
-
-      {/* Shop banner */}
-      <div onClick={() => onTabChange('shop')} style={{
-        ...card,
-        background: 'linear-gradient(135deg, rgba(52,211,153,0.15), rgba(56,189,248,0.1))',
-        cursor: 'pointer',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-      }}>
-        <div>
-          <div style={{ color: '#fff', fontWeight: '700', fontSize: '15px' }}>📚 VitalGoal Shop</div>
-          <div style={{ color: '#6b7280', fontSize: '13px', marginTop: '4px' }}>Ebooks & courses to level up your health</div>
-        </div>
-        <div style={{ color: '#34d399', fontSize: '20px' }}>→</div>
+        {state.profile?.height && today.weight && (
+          <div style={{ textAlign: 'right' }}>
+            <div style={{ color: C.muted, fontSize: '11px' }}>BMI</div>
+            <div style={{ color: C.green, fontWeight: '800', fontSize: '18px' }}>
+              {(today.weight / Math.pow(state.profile.height / 100, 2)).toFixed(1)}
+            </div>
+          </div>
+        )}
       </div>
+
+      {/* 7 day chart */}
+      <WeekChart logs={state.logs}/>
 
     </div>
   );
 }
-
-// ── Shared styles ──
-const card = {
-  background: 'rgba(255,255,255,0.04)',
-  border: '1px solid rgba(255,255,255,0.07)',
-  borderRadius: '16px',
-  padding: '16px',
-};
-const cardTitle = { color: '#fff', fontWeight: '700', fontSize: '15px' };
-const metricCard = {
-  background: 'rgba(255,255,255,0.03)',
-  border: '1px solid rgba(255,255,255,0.06)',
-  borderRadius: '12px',
-  padding: '12px',
-};
-const statChip = {
-  background: 'rgba(255,255,255,0.04)',
-  border: '1px solid rgba(255,255,255,0.07)',
-  borderRadius: '12px',
-  padding: '12px 8px',
-  display: 'flex',
-  flexDirection: 'column',
-  alignItems: 'center',
-  gap: '2px',
-  textAlign: 'center',
-};
-const btnPrimary = {
-  width: '100%',
-  background: 'linear-gradient(135deg, #34d399, #38bdf8)',
-  border: 'none',
-  borderRadius: '12px',
-  color: '#0a0a0f',
-  fontSize: '16px',
-  fontWeight: '800',
-  padding: '14px',
-  cursor: 'pointer',
-};
 
 export default Dashboard;

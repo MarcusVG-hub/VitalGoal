@@ -1,176 +1,74 @@
 import React from 'react';
 
+const C = {
+  bg: '#F5FBF6', bgAlt: '#EAF6ED', white: '#FFFFFF',
+  green: '#1B7A3E', green2: '#28A855', green3: '#34D468',
+  greenSoft: '#D4F5E0', gold: '#B5883A', goldSoft: '#F4E4C1',
+  dark: '#0D2415', text: '#1A3322', muted: '#4A7A5A',
+  border: 'rgba(27,122,62,0.12)', shadow: '0 2px 16px rgba(27,122,62,0.08)',
+};
+
 const products = [
-  {
-    id: 1,
-    emoji: '💧',
-    title: 'Hydration Mastery',
-    desc: 'Learn how drinking more water can transform your energy, skin and focus in 30 days.',
-    price: '€7',
-    color: '#38bdf8',
-    type: 'ebook',
-    link: 'https://buy.stripe.com/00waEWgWF9Sf2lsas8fAc00',
-  },
-  {
-    id: 2,
-    emoji: '😴',
-    title: 'Sleep Like a Pro',
-    desc: 'The complete guide to fixing your sleep, building a night routine and waking up energised.',
-    price: '€9',
-    color: '#a78bfa',
-    type: 'ebook',
-    link: 'https://buy.stripe.com/dRm5kC35Pc0nd067fWfAc01',
-  },
-  {
-    id: 3,
-    emoji: '🔥',
-    title: 'Fat Loss Simplified',
-    desc: 'No fads, no nonsense. A simple calorie and habit guide to losing weight and keeping it off.',
-    price: '€9',
-    color: '#fb923c',
-    type: 'ebook',
-    link: 'https://buy.stripe.com/9B6fZg6i1c0n6BIcAgfAc02',
-  },
-  {
-    id: 4,
-    emoji: '💪',
-    title: 'Build Muscle at Home',
-    desc: 'A beginner friendly guide to building real muscle with no gym and no equipment needed.',
-    price: '€9',
-    color: '#34d399',
-    type: 'ebook',
-    link: 'https://buy.stripe.com/eVq9AS49Te8v2ls0RyfAc03',
-  },
-  {
-    id: 5,
-    emoji: '🌱',
-    title: '30 Day Glow Up Guide',
-    desc: 'A full month of daily health, fitness and mindset tasks to completely transform how you look and feel.',
-    price: '€19',
-    color: '#34d399',
-    type: 'ebook',
-    badge: '⭐ Premium Ebook',
-    link: 'https://buy.stripe.com/3cIeVc35P3tRd06bwcfAc04',
-  },
-  {
-    id: 6,
-    emoji: '🧠',
-    title: 'Mental Clarity Blueprint',
-    desc: 'Reduce brain fog, build focus and create a daily routine that keeps your mind sharp all day.',
-    price: '€19',
-    color: '#38bdf8',
-    type: 'ebook',
-    badge: '⭐ Premium Ebook',
-    link: 'https://buy.stripe.com/4gMdR89ud0hFgci6bSfAc05',
-  },
+  { id:1, emoji:'💧', title:'Hydration Mastery',       price:'€7',  color: C.green,  bg:'#E0F2FE', link:'https://buy.stripe.com/00waEWgWF9Sf2lsas8fAc00', desc:'Transform your energy and skin by mastering hydration.' },
+  { id:2, emoji:'😴', title:'Sleep Like a Pro',         price:'€9',  color:'#7C3AED', bg:'#EDE9FE', link:'https://buy.stripe.com/dRm5kC35Pc0nd067fWfAc01', desc:'Fix your sleep and wake up energised every day.' },
+  { id:3, emoji:'🔥', title:'Fat Loss Simplified',      price:'€9',  color:'#EA580C', bg:'#FFEDD5', link:'https://buy.stripe.com/9B6fZg6i1c0n6BIcAgfAc02', desc:'Lose fat and keep it off with science-backed habits.' },
+  { id:4, emoji:'💪', title:'Build Muscle at Home',     price:'€9',  color: C.green,  bg: C.greenSoft, link:'https://buy.stripe.com/eVq9AS49Te8v2ls0RyfAc03', desc:'Build real muscle with no gym needed.' },
+  { id:5, emoji:'🌱', title:'30 Day Glow Up Guide',     price:'€19', color: C.gold,   bg: C.goldSoft,  link:'https://buy.stripe.com/3cIeVc35P3tRd06bwcfAc04', desc:'A full month of daily tasks to transform how you look and feel.', badge:'⭐ Premium' },
+  { id:6, emoji:'🧠', title:'Mental Clarity Blueprint', price:'€19', color: C.gold,   bg: C.goldSoft,  link:'https://buy.stripe.com/4gMdR89ud0hFgci6bSfAc05', desc:'Reduce brain fog and build laser-sharp focus.', badge:'⭐ Premium' },
 ];
 
-function ShopItem(props) {
-  var item = props.item;
-  return React.createElement('div', {
-    style: {
-      background: 'rgba(255,255,255,0.04)',
-      border: '1px solid rgba(255,255,255,0.07)',
-      borderRadius: '16px',
-      padding: '16px',
-      display: 'flex',
-      flexDirection: 'column',
-      gap: '10px',
-    }
-  },
-    item.badge ? React.createElement('div', {
-      style: {
-        display: 'inline-flex',
-        alignSelf: 'flex-start',
-        background: 'rgba(52,211,153,0.12)',
-        border: '1px solid rgba(52,211,153,0.3)',
-        borderRadius: '100px',
-        padding: '3px 10px',
-        color: '#34d399',
-        fontSize: '11px',
-        fontWeight: '600',
-      }
-    }, item.badge) : null,
-    React.createElement('div', {
-      style: { display: 'flex', alignItems: 'center', gap: '10px' }
-    },
-      React.createElement('div', {
-        style: {
-          width: '44px', height: '44px',
-          borderRadius: '12px',
-          background: item.color + '22',
-          border: '1px solid ' + item.color + '44',
-          display: 'flex', alignItems: 'center',
-          justifyContent: 'center', fontSize: '22px',
-          flexShrink: 0,
-        }
-      }, item.emoji),
-      React.createElement('div', null,
-        React.createElement('div', {
-          style: { color: '#fff', fontWeight: '700', fontSize: '15px' }
-        }, item.title),
-        React.createElement('div', {
-          style: { color: '#6b7280', fontSize: '12px', marginTop: '2px' }
-        }, '📄 Ebook')
-      )
-    ),
-    React.createElement('div', {
-      style: { color: '#9ca3af', fontSize: '13px', lineHeight: '1.5' }
-    }, item.desc),
-    React.createElement('div', {
-      style: { display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: '4px' }
-    },
-      React.createElement('div', {
-        style: { color: item.color, fontWeight: '800', fontSize: '20px' }
-      }, item.price),
-      React.createElement('a', {
-        href: item.link,
-        target: '_blank',
-        rel: 'noopener noreferrer',
-        style: {
-          background: 'linear-gradient(135deg, ' + item.color + ', ' + item.color + 'aa)',
-          border: 'none',
-          borderRadius: '10px',
-          color: '#0a0a0f',
-          fontSize: '14px',
-          fontWeight: '800',
-          padding: '8px 20px',
-          cursor: 'pointer',
-          textDecoration: 'none',
-          display: 'inline-block',
-        }
-      }, 'Buy Now')
-    )
+function ShopItem({ item }) {
+  return (
+    <div style={{
+      background: C.white, borderRadius: '16px', padding: '18px',
+      border: item.badge ? `1.5px solid ${C.gold}44` : `1px solid ${C.border}`,
+      boxShadow: item.badge ? `0 4px 20px ${C.gold}18` : C.shadow,
+      display: 'flex', flexDirection: 'column', gap: '10px',
+      transition: 'transform 0.2s, box-shadow 0.2s',
+    }}
+    onMouseEnter={e => { e.currentTarget.style.transform = 'translateY(-2px)'; }}
+    onMouseLeave={e => { e.currentTarget.style.transform = 'translateY(0)'; }}
+    >
+      {item.badge && (
+        <div style={{ alignSelf: 'flex-start', background: C.goldSoft, border: `1px solid ${C.gold}44`, borderRadius: '50px', padding: '3px 10px', color: C.gold, fontSize: '11px', fontWeight: '700' }}>{item.badge}</div>
+      )}
+      <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+        <div style={{ width: '48px', height: '48px', borderRadius: '14px', background: item.bg, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '24px', flexShrink: 0 }}>{item.emoji}</div>
+        <div>
+          <div style={{ color: C.dark, fontWeight: '700', fontSize: '15px' }}>{item.title}</div>
+          <div style={{ color: C.muted, fontSize: '12px' }}>📄 Ebook</div>
+        </div>
+      </div>
+      <div style={{ color: C.muted, fontSize: '13px', lineHeight: '1.5' }}>{item.desc}</div>
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', paddingTop: '10px', borderTop: `1px solid ${C.border}` }}>
+        <div style={{ color: item.color, fontWeight: '800', fontSize: '22px' }}>{item.price}</div>
+        <a href={item.link} target="_blank" rel="noopener noreferrer" style={{
+          background: item.badge ? `linear-gradient(135deg, ${C.gold}, #D4A843)` : `linear-gradient(135deg, ${C.green}, ${C.green2})`,
+          borderRadius: '50px', color: '#fff', fontSize: '13px', fontWeight: '700',
+          padding: '8px 20px', textDecoration: 'none', display: 'inline-block',
+          boxShadow: item.badge ? `0 4px 12px ${C.gold}44` : `0 4px 12px rgba(27,122,62,0.3)`,
+          transition: 'transform 0.15s',
+        }}>Buy Now →</a>
+      </div>
+    </div>
   );
 }
 
 function Shop() {
-  return React.createElement('div', {
-    style: { display: 'flex', flexDirection: 'column', gap: '20px' }
-  },
-    React.createElement('div', {
-      style: {
-        background: 'linear-gradient(135deg, rgba(52,211,153,0.15), rgba(56,189,248,0.1))',
-        border: '1px solid rgba(52,211,153,0.2)',
-        borderRadius: '16px', padding: '20px',
-        textAlign: 'center',
-      }
-    },
-      React.createElement('div', { style: { fontSize: '32px', marginBottom: '8px' } }, '📚'),
-      React.createElement('div', { style: { color: '#fff', fontWeight: '800', fontSize: '20px' } }, 'VitalGoal Shop'),
-      React.createElement('div', { style: { color: '#6b7280', fontSize: '14px', marginTop: '6px' } }, 'Science-backed ebooks to help you reach your health goals faster')
-    ),
-    React.createElement('div', {
-      style: { display: 'flex', flexDirection: 'column', gap: '12px' }
-    }, products.map(function(p) { return React.createElement(ShopItem, { key: p.id, item: p }); })),
-    React.createElement('div', {
-      style: {
-        background: 'rgba(255,255,255,0.03)',
-        border: '1px solid rgba(255,255,255,0.06)',
-        borderRadius: '12px', padding: '14px',
-        textAlign: 'center', color: '#4b5563', fontSize: '13px',
-      }
-    }, '🔒 All purchases are secure and delivered instantly via Stripe')
+  return (
+    <div className="page-enter" style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+      <div style={{ background: `linear-gradient(135deg, ${C.green}, ${C.green2})`, borderRadius: '20px', padding: '20px', textAlign: 'center', boxShadow: `0 8px 32px rgba(27,122,62,0.3)` }}>
+        <div style={{ fontSize: '28px', marginBottom: '8px' }}>📚</div>
+        <div style={{ color: '#fff', fontWeight: '800', fontSize: '20px' }}>VitalGoal Shop</div>
+        <div style={{ color: 'rgba(255,255,255,0.7)', fontSize: '13px', marginTop: '6px' }}>Science-backed ebooks to help you reach your goals faster</div>
+      </div>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+        {products.map(p => <ShopItem key={p.id} item={p}/>)}
+      </div>
+      <div style={{ background: C.white, border: `1px solid ${C.border}`, borderRadius: '12px', padding: '14px', textAlign: 'center', color: C.muted, fontSize: '13px' }}>
+        🔒 All purchases are secure and delivered instantly via Stripe
+      </div>
+    </div>
   );
 }
 

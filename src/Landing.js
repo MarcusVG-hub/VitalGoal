@@ -16,6 +16,97 @@ const C = {
   border:   'rgba(27,122,62,0.15)',
 };
 
+
+function AnimationStyles() {
+  return (
+    <style>{`
+      @keyframes fadeUp {
+        from { opacity: 0; transform: translateY(24px); }
+        to   { opacity: 1; transform: translateY(0); }
+      }
+      @keyframes fadeIn {
+        from { opacity: 0; }
+        to   { opacity: 1; }
+      }
+      @keyframes scaleIn {
+        from { opacity: 0; transform: scale(0.95); }
+        to   { opacity: 1; transform: scale(1); }
+      }
+      .anim-fadeup {
+        opacity: 0;
+        animation: fadeUp 0.6s cubic-bezier(0.22,1,0.36,1) forwards;
+      }
+      .anim-fadein {
+        opacity: 0;
+        animation: fadeIn 0.5s ease forwards;
+      }
+      .hover-lift {
+        transition: transform 0.2s ease, box-shadow 0.2s ease !important;
+      }
+      .hover-lift:hover {
+        transform: translateY(-4px) !important;
+        box-shadow: 0 12px 40px rgba(27,122,62,0.15) !important;
+      }
+      .hover-lift-dark:hover {
+        transform: translateY(-4px) !important;
+        box-shadow: 0 12px 40px rgba(0,0,0,0.3) !important;
+      }
+      .hover-btn {
+        transition: transform 0.15s ease, box-shadow 0.15s ease, opacity 0.15s ease !important;
+      }
+      .hover-btn:hover {
+        transform: translateY(-2px) !important;
+        opacity: 0.92 !important;
+      }
+      .hover-btn:active {
+        transform: scale(0.97) !important;
+      }
+      .hover-nav {
+        transition: color 0.2s ease !important;
+      }
+      .hover-nav:hover {
+        color: #1B7A3E !important;
+      }
+      .reveal {
+        opacity: 0;
+        transform: translateY(20px);
+        transition: opacity 0.6s ease, transform 0.6s cubic-bezier(0.22,1,0.36,1);
+      }
+      .reveal.visible {
+        opacity: 1;
+        transform: translateY(0);
+      }
+      .faq-item {
+        transition: background 0.2s ease !important;
+      }
+      .faq-item:hover {
+        background: #EAF6ED !important;
+      }
+    `}</style>
+  );
+}
+
+// Scroll reveal hook
+function useReveal() {
+  const [refs] = React.useState(() => new Map());
+  React.useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach(e => {
+          if (e.isIntersecting) {
+            e.target.classList.add('visible');
+          }
+        });
+      },
+      { threshold: 0.12 }
+    );
+    refs.forEach(el => { if (el) observer.observe(el); });
+    return () => observer.disconnect();
+  }, [refs]);
+  const ref = (key) => (el) => { if (el) refs.set(key, el); };
+  return ref;
+}
+
 function Blobs() {
   return (
     <svg style={{ position:'absolute', inset:0, width:'100%', height:'100%', pointerEvents:'none', overflow:'hidden' }} preserveAspectRatio="xMidYMid slice">
@@ -259,10 +350,12 @@ function PricingCards({ onGetStarted }) {
 
 function Landing({ onGetStarted }) {
   const [openFaq, setOpenFaq] = useState(null);
+  const reveal = useReveal();
   const [showContact, setShowContact] = useState(false);
 
   return (
     <div style={{ background: C.bg, color: C.text, fontFamily: "'Nunito', 'Segoe UI', sans-serif", overflowX: 'hidden' }}>
+      <AnimationStyles />
 
       {/* NAV */}
       <nav style={{
@@ -275,10 +368,10 @@ function Landing({ onGetStarted }) {
       }}>
         <div style={{ fontSize: '22px', fontWeight: '700', letterSpacing: '-0.5px', background: `linear-gradient(135deg, ${C.green}, ${C.green2})`, WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>⚡ VitalGoal</div>
         <div style={{ display: 'flex', gap: '32px', alignItems: 'center' }}>
-          <a href="#features" style={{ color: C.muted, textDecoration: 'none', fontSize: '15px', fontWeight: '600' }}>Features</a>
-          <a href="#shop"     style={{ color: C.muted, textDecoration: 'none', fontSize: '15px', fontWeight: '600' }}>Shop</a>
-          <a href="#why"      style={{ color: C.muted, textDecoration: 'none', fontSize: '15px', fontWeight: '600' }}>Why Us</a>
-          <button onClick={onGetStarted} style={{ background: `linear-gradient(135deg, ${C.green}, ${C.green2})`, border: 'none', borderRadius: '50px', color: C.white, fontSize: '15px', fontWeight: '600', padding: '10px 24px', cursor: 'pointer', boxShadow: `0 4px 20px ${C.green}44` }}>Get Started Free</button>
+          <a href="#features" className="hover-nav" style={{ color: C.muted, textDecoration: 'none', fontSize: '15px', fontWeight: '600' }}>Features</a>
+          <a href="#shop"     className="hover-nav" style={{ color: C.muted, textDecoration: 'none', fontSize: '15px', fontWeight: '600' }}>Shop</a>
+          <a href="#why"      className="hover-nav" style={{ color: C.muted, textDecoration: 'none', fontSize: '15px', fontWeight: '600' }}>Why Us</a>
+          <button onClick={onGetStarted} className="hover-btn" style={{ background: `linear-gradient(135deg, ${C.green}, ${C.green2})`, border: 'none', borderRadius: '50px', color: C.white, fontSize: '15px', fontWeight: '600', padding: '10px 24px', cursor: 'pointer', boxShadow: `0 4px 20px ${C.green}44` }}>Get Started Free</button>
         </div>
       </nav>
 
@@ -341,7 +434,7 @@ function Landing({ onGetStarted }) {
       {/* FEATURES */}
       <section id="features" style={{ padding: '120px 48px', background: C.white }}>
         <div style={{ maxWidth: '1100px', margin: '0 auto', textAlign: 'center' }}>
-          <div style={{ display: 'inline-block', background: C.greenSoft, borderRadius: '50px', padding: '6px 20px', marginBottom: '24px', color: C.green, fontSize: '14px', fontWeight: '600' }}>📱 The App</div>
+          <div ref={reveal('app')} className="reveal" style={{ display: 'inline-block', background: C.greenSoft, borderRadius: '50px', padding: '6px 20px', marginBottom: '24px', color: C.green, fontSize: '14px', fontWeight: '600' }}>📱 The App</div>
           <h2 style={{ fontSize: 'clamp(32px, 4vw, 52px)', fontWeight: '700', letterSpacing: '-1.5px', color: C.dark, margin: '0 0 20px' }}>
             Everything you need.<br />
             <span style={{ background: `linear-gradient(135deg, ${C.green}, ${C.green3})`, WebkitBackgroundClip:'text', WebkitTextFillColor:'transparent' }}>Nothing you don't.</span>
@@ -358,7 +451,7 @@ function Landing({ onGetStarted }) {
               { icon:'⚖️', title:'BMI Calculator',    desc:'Monitor your body composition with a built-in BMI tracker linked directly to your profile.' },
               { icon:'🔒', title:'100% Private',      desc:'Your data belongs to you. No ads, no data selling, no subscriptions. Ever.' },
             ].map(f => (
-              <div key={f.title} style={{ background: C.bg, border: `1px solid ${C.border}`, borderRadius: '20px', padding: '32px', boxShadow: '0 4px 24px rgba(27,122,62,0.06)' }}>
+              <div key={f.title} className="hover-lift" style={{ background: C.bg, border: `1px solid ${C.border}`, borderRadius: '20px', padding: '32px', boxShadow: '0 4px 24px rgba(27,122,62,0.06)' }}>
                 <div style={{ width: '52px', height: '52px', borderRadius: '14px', background: C.greenSoft, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '26px', marginBottom: '20px' }}>{f.icon}</div>
                 <div style={{ color: C.dark, fontWeight: '700', fontSize: '17px', marginBottom: '10px' }}>{f.title}</div>
                 <div style={{ color: C.muted, fontSize: '15px', lineHeight: '1.6' }}>{f.desc}</div>
@@ -372,7 +465,7 @@ function Landing({ onGetStarted }) {
       {/* TESTIMONIALS */}
       <section style={{ padding: '100px 48px', background: C.bgAlt }}>
         <div style={{ maxWidth: '1000px', margin: '0 auto', textAlign: 'center' }}>
-          <div style={{ display: 'inline-block', background: C.greenSoft, borderRadius: '50px', padding: '6px 20px', marginBottom: '24px', color: C.green, fontSize: '14px', fontWeight: '600' }}>⭐ What People Say</div>
+          <div ref={reveal('reviews')} className="reveal" style={{ display: 'inline-block', background: C.greenSoft, borderRadius: '50px', padding: '6px 20px', marginBottom: '24px', color: C.green, fontSize: '14px', fontWeight: '600' }}>⭐ What People Say</div>
           <h2 style={{ fontSize: 'clamp(28px, 4vw, 44px)', fontWeight: '700', letterSpacing: '-1px', color: C.dark, margin: '0 0 56px' }}>
             Real people.<br />
             <span style={{ background: `linear-gradient(135deg, ${C.green}, ${C.green3})`, WebkitBackgroundClip:'text', WebkitTextFillColor:'transparent' }}>Real results.</span>
@@ -383,7 +476,7 @@ function Landing({ onGetStarted }) {
               { name: 'James K.', age: '34', quote: "The Sleep Like a Pro ebook genuinely fixed my sleep in two weeks. I was sceptical but the science is solid and the advice actually works.", stars: 5 },
               { name: 'Priya R.', age: '25', quote: "So simple. I log everything in under a minute every morning. After 30 days I could actually see my habits improving in the charts. Love it.", stars: 5 },
             ].map(t => (
-              <div key={t.name} style={{ background: C.white, border: `1px solid ${C.border}`, borderRadius: '20px', padding: '28px', boxShadow: '0 4px 20px rgba(27,122,62,0.06)' }}>
+              <div key={t.name} className="hover-lift" style={{ background: C.white, border: `1px solid ${C.border}`, borderRadius: '20px', padding: '28px', boxShadow: '0 4px 20px rgba(27,122,62,0.06)' }}>
                 <div style={{ display: 'flex', gap: '4px', marginBottom: '16px' }}>
                   {Array(t.stars).fill('⭐').map((s,i) => <span key={i} style={{ fontSize: '14px' }}>{s}</span>)}
                 </div>
@@ -432,7 +525,7 @@ function Landing({ onGetStarted }) {
           <ellipse cx="10%" cy="70%" rx="250" ry="200" fill={C.green2} opacity="0.04" filter="url(#bs)"/>
         </svg>
         <div style={{ maxWidth: '1100px', margin: '0 auto', textAlign: 'center', position: 'relative', zIndex: 1 }}>
-          <div style={{ display: 'inline-block', background: C.greenSoft, borderRadius: '50px', padding: '6px 20px', marginBottom: '24px', color: C.green, fontSize: '14px', fontWeight: '600' }}>📚 The Shop</div>
+          <div ref={reveal('shop')} className="reveal" style={{ display: 'inline-block', background: C.greenSoft, borderRadius: '50px', padding: '6px 20px', marginBottom: '24px', color: C.green, fontSize: '14px', fontWeight: '600' }}>📚 The Shop</div>
           <h2 style={{ fontSize: 'clamp(32px, 4vw, 52px)', fontWeight: '700', letterSpacing: '-1.5px', color: C.dark, margin: '0 0 20px' }}>
             Science-backed guides.<br />
             <span style={{ background: `linear-gradient(135deg, ${C.green}, ${C.green3})`, WebkitBackgroundClip:'text', WebkitTextFillColor:'transparent' }}>Real results.</span>
@@ -449,7 +542,7 @@ function Landing({ onGetStarted }) {
               { emoji:'🌱', title:'30 Day Glow Up Guide',     price:'€19', desc:'A complete month of daily health, fitness and mindset tasks to transform how you look and feel.',      isPremium: true,  badge:'⭐ Premium', link:'https://buy.stripe.com/3cIeVc35P3tRd06bwcfAc04' },
               { emoji:'🧠', title:'Mental Clarity Blueprint', price:'€19', desc:'Reduce brain fog, build laser focus and create a daily routine that keeps your mind sharp all day.',   isPremium: true,  badge:'⭐ Premium', link:'https://buy.stripe.com/4gMdR89ud0hFgci6bSfAc05' },
             ].map(e => (
-              <div key={e.title} style={{ background: C.bg, border: e.isPremium ? `1.5px solid ${C.gold}55` : `1px solid ${C.border}`, borderRadius: '20px', padding: '28px', display: 'flex', flexDirection: 'column', boxShadow: e.isPremium ? `0 4px 24px ${C.gold}22` : '0 4px 24px rgba(27,122,62,0.07)' }}>
+              <div key={e.title} className="hover-lift" style={{ background: C.bg, border: e.isPremium ? `1.5px solid ${C.gold}55` : `1px solid ${C.border}`, borderRadius: '20px', padding: '28px', display: 'flex', flexDirection: 'column', boxShadow: e.isPremium ? `0 4px 24px ${C.gold}22` : '0 4px 24px rgba(27,122,62,0.07)' }}>
                 {e.badge && (
                   <div style={{ alignSelf: 'flex-start', background: C.goldSoft, border: `1px solid ${C.gold}44`, borderRadius: '50px', padding: '4px 12px', color: C.gold, fontSize: '12px', fontWeight: '700', marginBottom: '16px' }}>{e.badge}</div>
                 )}
@@ -474,7 +567,7 @@ function Landing({ onGetStarted }) {
       {/* WHY */}
       <section id="why" style={{ padding: '120px 48px', background: C.bgAlt }}>
         <div style={{ maxWidth: '900px', margin: '0 auto', textAlign: 'center' }}>
-          <div style={{ display: 'inline-block', background: C.greenSoft, borderRadius: '50px', padding: '6px 20px', marginBottom: '24px', color: C.green, fontSize: '14px', fontWeight: '600' }}>💚 Why VitalGoal</div>
+          <div ref={reveal('why')} className="reveal" style={{ display: 'inline-block', background: C.greenSoft, borderRadius: '50px', padding: '6px 20px', marginBottom: '24px', color: C.green, fontSize: '14px', fontWeight: '600' }}>💚 Why VitalGoal</div>
           <h2 style={{ fontSize: 'clamp(32px, 4vw, 52px)', fontWeight: '700', letterSpacing: '-1.5px', color: C.dark, margin: '0 0 20px' }}>
             Built for people,<br />
             <span style={{ background: `linear-gradient(135deg, ${C.green}, ${C.green3})`, WebkitBackgroundClip:'text', WebkitTextFillColor:'transparent' }}>not profit.</span>
@@ -489,7 +582,7 @@ function Landing({ onGetStarted }) {
               { icon:'📱', title:'Works Everywhere',   desc:'Works on any phone, tablet or computer instantly. No app store needed.' },
               { icon:'🧬', title:'Science-Backed',     desc:'Every ebook is grounded in peer-reviewed research, not trends.' },
             ].map(w => (
-              <div key={w.title} style={{ background: C.white, border: `1px solid ${C.border}`, borderRadius: '20px', padding: '32px 24px', textAlign: 'center', boxShadow: '0 4px 16px rgba(27,122,62,0.06)' }}>
+              <div key={w.title} className="hover-lift" style={{ background: C.white, border: `1px solid ${C.border}`, borderRadius: '20px', padding: '32px 24px', textAlign: 'center', boxShadow: '0 4px 16px rgba(27,122,62,0.06)' }}>
                 <div style={{ width:'60px', height:'60px', borderRadius:'18px', background: C.greenSoft, display:'flex', alignItems:'center', justifyContent:'center', fontSize:'28px', margin:'0 auto 20px' }}>{w.icon}</div>
                 <div style={{ color: C.dark, fontWeight: '700', fontSize: '16px', marginBottom: '10px' }}>{w.title}</div>
                 <div style={{ color: C.muted, fontSize: '14px', lineHeight: '1.6' }}>{w.desc}</div>
@@ -515,7 +608,7 @@ function Landing({ onGetStarted }) {
               { q: 'Is my health data private?', a: 'Yes. Your data is stored securely in your own account and is never shared, sold or used for advertising. You can delete your account and all data at any time.' },
               { q: 'What if I want a refund?', a: 'Due to the digital nature of our products, all sales are final. Once an ebook has been delivered we are unable to offer refunds. If you have any issues accessing your purchase, contact us at hello@getvitalgoal.com and we will help you out.' },
             ].map((f, i) => (
-              <div key={i} style={{ border: `1px solid ${C.border}`, borderRadius: '16px', overflow: 'hidden', background: C.bg }}>
+              <div key={i} className="faq-item" style={{ border: `1px solid ${C.border}`, borderRadius: '16px', overflow: 'hidden', background: C.bg }}>
                 <button
                   onClick={() => setOpenFaq(openFaq === i ? null : i)}
                   style={{ width: '100%', display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '20px 24px', background: 'none', border: 'none', cursor: 'pointer', textAlign: 'left' }}
