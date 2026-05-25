@@ -82,6 +82,18 @@ function AnimationStyles() {
       .faq-item:hover {
         background: #EAF6ED !important;
       }
+      .nav-links {
+        display: flex;
+        gap: 32px;
+        align-items: center;
+      }
+      @media (max-width: 640px) {
+        .nav-links { display: none; }
+        .nav-links-mobile { display: flex !important; }
+      }
+      @media (min-width: 641px) {
+        .nav-links-mobile { display: none !important; }
+      }
     `}</style>
   );
 }
@@ -361,22 +373,23 @@ function Landing({ onGetStarted }) {
       <nav style={{
         position: 'fixed', top: 0, left: 0, right: 0, zIndex: 100,
         display: 'flex', justifyContent: 'space-between', alignItems: 'center',
-        padding: '18px 48px',
+        padding: '16px 20px',
         background: 'rgba(245,251,246,0.92)',
         backdropFilter: 'blur(20px)',
         borderBottom: `1px solid ${C.border}`,
       }}>
         <div style={{ fontSize: '22px', fontWeight: '700', letterSpacing: '-0.5px', background: `linear-gradient(135deg, ${C.green}, ${C.green2})`, WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>⚡ VitalGoal</div>
-        <div style={{ display: 'flex', gap: '32px', alignItems: 'center' }}>
+        <div className="nav-links">
           <a href="#features" className="hover-nav" style={{ color: C.muted, textDecoration: 'none', fontSize: '15px', fontWeight: '600' }}>Features</a>
           <a href="#shop"     className="hover-nav" style={{ color: C.muted, textDecoration: 'none', fontSize: '15px', fontWeight: '600' }}>Shop</a>
           <a href="#why"      className="hover-nav" style={{ color: C.muted, textDecoration: 'none', fontSize: '15px', fontWeight: '600' }}>Why Us</a>
           <button onClick={onGetStarted} className="hover-btn" style={{ background: `linear-gradient(135deg, ${C.green}, ${C.green2})`, border: 'none', borderRadius: '50px', color: C.white, fontSize: '15px', fontWeight: '600', padding: '10px 24px', cursor: 'pointer', boxShadow: `0 4px 20px ${C.green}44` }}>Get Started Free</button>
         </div>
+        <button onClick={onGetStarted} className="nav-links-mobile" style={{ display: 'none', background: `linear-gradient(135deg, ${C.green}, ${C.green2})`, border: 'none', borderRadius: '50px', color: C.white, fontSize: '14px', fontWeight: '600', padding: '9px 18px', cursor: 'pointer' }}>Start Free</button>
       </nav>
 
       {/* HERO */}
-      <section style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', textAlign: 'center', padding: '140px 32px 80px', background: '#E8F5EC', position: 'relative', overflow: 'hidden' }}>
+      <section style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', textAlign: 'center', padding: 'clamp(100px, 12vw, 140px) clamp(20px, 5vw, 32px) clamp(60px, 8vw, 80px)', background: '#E8F5EC', position: 'relative', overflow: 'hidden' }}>
         <Blobs />
         <DotGrid />
         <div style={{ position:'relative', zIndex:1, maxWidth:'780px', margin:'0 auto' }}>
@@ -395,7 +408,7 @@ function Landing({ onGetStarted }) {
             Most health apps waste your time. VitalGoal lets you log your water, sleep, steps, calories and mood in seconds — then gets out of your day. No complicated menus. No confusion. Just done.
           </p>
 
-          <div style={{ display: 'flex', gap: '16px', justifyContent: 'center', flexWrap: 'wrap', marginBottom: '48px' }}>
+          <div style={{ display: 'flex', gap: '12px', justifyContent: 'center', flexWrap: 'wrap', marginBottom: '48px' }}>
             <button onClick={onGetStarted} style={{ background: `linear-gradient(135deg, ${C.green}, ${C.green2})`, border: 'none', borderRadius: '50px', color: C.white, fontSize: '17px', fontWeight: '600', padding: '16px 40px', cursor: 'pointer', boxShadow: `0 8px 32px ${C.green}40` }}>Start Tracking Free →</button>
             <a href="#shop" style={{ background: C.white, border: `1.5px solid ${C.border}`, borderRadius: '50px', color: C.green, fontSize: '17px', fontWeight: '600', padding: '16px 40px', textDecoration: 'none', boxShadow: '0 4px 16px rgba(0,0,0,0.06)' }}>Browse Ebooks</a>
           </div>
@@ -414,8 +427,8 @@ function Landing({ onGetStarted }) {
       </section>
 
       {/* STATS BAR */}
-      <section style={{ background: C.green, padding: '32px 48px' }}>
-        <div style={{ maxWidth: '900px', margin: '0 auto', display: 'flex', justifyContent: 'space-around', flexWrap: 'wrap', gap: '24px', textAlign: 'center' }}>
+      <section style={{ background: C.green, padding: '24px clamp(16px, 4vw, 48px)' }}>
+        <div style={{ maxWidth: '900px', margin: '0 auto', display: 'flex', justifyContent: 'center', flexWrap: 'wrap', gap: '24px 40px', textAlign: 'center' }}>
           {[
             ['6', 'Health Ebooks'],
             ['5', 'Daily Metrics'],
@@ -432,7 +445,7 @@ function Landing({ onGetStarted }) {
       </section>
 
       {/* FEATURES */}
-      <section id="features" style={{ padding: '120px 48px', background: C.white }}>
+      <section id="features" style={{ padding: 'clamp(60px, 8vw, 120px) clamp(20px, 5vw, 48px)', background: C.white }}>
         <div style={{ maxWidth: '1100px', margin: '0 auto', textAlign: 'center' }}>
           <div ref={reveal('app')} className="reveal" style={{ display: 'inline-block', background: C.greenSoft, borderRadius: '50px', padding: '6px 20px', marginBottom: '24px', color: C.green, fontSize: '14px', fontWeight: '600' }}>📱 The App</div>
           <h2 style={{ fontSize: 'clamp(32px, 4vw, 52px)', fontWeight: '700', letterSpacing: '-1.5px', color: C.dark, margin: '0 0 20px' }}>
@@ -463,7 +476,7 @@ function Landing({ onGetStarted }) {
       </section>
 
       {/* TESTIMONIALS */}
-      <section style={{ padding: '100px 48px', background: C.bgAlt }}>
+      <section style={{ padding: 'clamp(60px, 8vw, 100px) clamp(20px, 5vw, 48px)', background: C.bgAlt }}>
         <div style={{ maxWidth: '1000px', margin: '0 auto', textAlign: 'center' }}>
           <div ref={reveal('reviews')} className="reveal" style={{ display: 'inline-block', background: C.greenSoft, borderRadius: '50px', padding: '6px 20px', marginBottom: '24px', color: C.green, fontSize: '14px', fontWeight: '600' }}>⭐ What People Say</div>
           <h2 style={{ fontSize: 'clamp(28px, 4vw, 44px)', fontWeight: '700', letterSpacing: '-1px', color: C.dark, margin: '0 0 56px' }}>
@@ -498,7 +511,7 @@ function Landing({ onGetStarted }) {
 
 
       {/* PRICING */}
-      <section style={{ padding: '120px 48px', background: C.bg }}>
+      <section style={{ padding: 'clamp(60px, 8vw, 120px) clamp(20px, 5vw, 48px)', background: C.bg }}>
         <div style={{ maxWidth: '900px', margin: '0 auto', textAlign: 'center' }}>
           <div style={{ display: 'inline-block', background: C.greenSoft, borderRadius: '50px', padding: '6px 20px', marginBottom: '24px', color: C.green, fontSize: '14px', fontWeight: '600' }}>💚 Pricing</div>
           <h2 style={{ fontSize: 'clamp(32px, 4vw, 52px)', fontWeight: '700', letterSpacing: '-1.5px', color: C.dark, margin: '0 0 20px' }}>
@@ -518,7 +531,7 @@ function Landing({ onGetStarted }) {
       </section>
 
       {/* SHOP */}
-      <section id="shop" style={{ padding: '120px 48px', background: C.white, position: 'relative', overflow: 'hidden' }}>
+      <section id="shop" style={{ padding: 'clamp(60px, 8vw, 120px) clamp(20px, 5vw, 48px)', background: C.white, position: 'relative', overflow: 'hidden' }}>
         <svg style={{ position:'absolute', inset:0, width:'100%', height:'100%', pointerEvents:'none' }} preserveAspectRatio="xMidYMid slice">
           <defs><filter id="bs"><feGaussianBlur stdDeviation="50"/></filter></defs>
           <ellipse cx="90%" cy="30%" rx="300" ry="250" fill={C.green} opacity="0.05" filter="url(#bs)"/>
@@ -565,7 +578,7 @@ function Landing({ onGetStarted }) {
       </section>
 
       {/* WHY */}
-      <section id="why" style={{ padding: '120px 48px', background: C.bgAlt }}>
+      <section id="why" style={{ padding: 'clamp(60px, 8vw, 120px) clamp(20px, 5vw, 48px)', background: C.bgAlt }}>
         <div style={{ maxWidth: '900px', margin: '0 auto', textAlign: 'center' }}>
           <div ref={reveal('why')} className="reveal" style={{ display: 'inline-block', background: C.greenSoft, borderRadius: '50px', padding: '6px 20px', marginBottom: '24px', color: C.green, fontSize: '14px', fontWeight: '600' }}>💚 Why VitalGoal</div>
           <h2 style={{ fontSize: 'clamp(32px, 4vw, 52px)', fontWeight: '700', letterSpacing: '-1.5px', color: C.dark, margin: '0 0 20px' }}>
@@ -593,7 +606,7 @@ function Landing({ onGetStarted }) {
       </section>
 
       {/* FAQ */}
-      <section style={{ padding: '100px 48px', background: C.white }}>
+      <section style={{ padding: 'clamp(60px, 8vw, 100px) clamp(20px, 5vw, 48px)', background: C.white }}>
         <div style={{ maxWidth: '720px', margin: '0 auto', textAlign: 'center' }}>
           <div style={{ display: 'inline-block', background: C.greenSoft, borderRadius: '50px', padding: '6px 20px', marginBottom: '24px', color: C.green, fontSize: '14px', fontWeight: '600' }}>❓ FAQ</div>
           <h2 style={{ fontSize: 'clamp(28px, 4vw, 44px)', fontWeight: '700', letterSpacing: '-1px', color: C.dark, margin: '0 0 48px' }}>
@@ -643,10 +656,10 @@ function Landing({ onGetStarted }) {
 
 
       {/* FOUNDER */}
-      <section style={{ padding: '100px 48px', background: C.white }}>
+      <section style={{ padding: 'clamp(60px, 8vw, 100px) clamp(20px, 5vw, 48px)', background: C.white }}>
         <div style={{ maxWidth: '720px', margin: '0 auto' }}>
           <div style={{ display: 'inline-block', background: C.greenSoft, borderRadius: '50px', padding: '6px 20px', marginBottom: '32px', color: C.green, fontSize: '14px', fontWeight: '600' }}>👋 Why I built this</div>
-          <div style={{ display: 'flex', gap: '32px', alignItems: 'flex-start', flexWrap: 'wrap' }}>
+          <div style={{ display: 'flex', gap: '32px', alignItems: 'flex-start', flexWrap: 'wrap', justifyContent: 'center' }}>
             <div style={{ flex: '1', minWidth: '280px' }}>
               <h2 style={{ fontSize: 'clamp(26px, 3vw, 38px)', fontWeight: '700', letterSpacing: '-1px', color: C.dark, margin: '0 0 24px', lineHeight: '1.2' }}>
                 "I just wanted something<br />
@@ -687,7 +700,7 @@ function Landing({ onGetStarted }) {
       </section>
 
       {/* CTA */}
-      <section style={{ padding: '120px 48px', textAlign: 'center', background: C.dark, position: 'relative', overflow: 'hidden' }}>
+      <section style={{ padding: 'clamp(60px, 8vw, 120px) clamp(20px, 5vw, 48px)', textAlign: 'center', background: C.dark, position: 'relative', overflow: 'hidden' }}>
         <svg style={{ position:'absolute', inset:0, width:'100%', height:'100%', pointerEvents:'none' }} preserveAspectRatio="xMidYMid slice">
           <defs><filter id="bc"><feGaussianBlur stdDeviation="60"/></filter></defs>
           <ellipse cx="15%" cy="40%" rx="350" ry="280" fill={C.green} opacity="0.12" filter="url(#bc)"/>
@@ -707,7 +720,7 @@ function Landing({ onGetStarted }) {
       </section>
 
       {/* FOOTER */}
-      <footer style={{ padding: '48px 48px', background: C.dark, borderTop: '1px solid rgba(255,255,255,0.06)', textAlign: 'center' }}>
+      <footer style={{ padding: '48px clamp(20px, 5vw, 48px)', background: C.dark, borderTop: '1px solid rgba(255,255,255,0.06)', textAlign: 'center' }}>
         <div style={{ maxWidth: '600px', margin: '0 auto' }}>
           <div style={{ fontSize: '22px', fontWeight: '700', background: `linear-gradient(135deg, ${C.green3}, ${C.green2})`, WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', marginBottom: '8px' }}>⚡ VitalGoal</div>
           <p style={{ color: 'rgba(255,255,255,0.3)', fontSize: '14px', marginBottom: '24px' }}>Your health journey starts here.</p>
