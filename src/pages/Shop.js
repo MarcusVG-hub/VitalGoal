@@ -9,12 +9,12 @@ const C = {
 };
 
 const products = [
-  { id:1, emoji:'💧', title:'Hydration Mastery',       price:'€7',  color: C.green,  bg:'#E0F2FE', link:'https://buy.stripe.com/00waEWgWF9Sf2lsas8fAc00', desc:'Transform your energy and skin by mastering hydration.' },
-  { id:2, emoji:'😴', title:'Sleep Like a Pro',         price:'€9',  color:'#7C3AED', bg:'#EDE9FE', link:'https://buy.stripe.com/dRm5kC35Pc0nd067fWfAc01', desc:'Fix your sleep and wake up energised every day.' },
-  { id:3, emoji:'🔥', title:'Fat Loss Simplified',      price:'€9',  color:'#EA580C', bg:'#FFEDD5', link:'https://buy.stripe.com/9B6fZg6i1c0n6BIcAgfAc02', desc:'Lose fat and keep it off with science-backed habits.' },
-  { id:4, emoji:'💪', title:'Build Muscle at Home',     price:'€9',  color: C.green,  bg: C.greenSoft, link:'https://buy.stripe.com/eVq9AS49Te8v2ls0RyfAc03', desc:'Build real muscle with no gym needed.' },
-  { id:5, emoji:'🌱', title:'30 Day Glow Up Guide',     price:'€19', color: C.gold,   bg: C.goldSoft,  link:'https://buy.stripe.com/3cIeVc35P3tRd06bwcfAc04', desc:'A full month of daily tasks to transform how you look and feel.', badge:'⭐ Premium' },
-  { id:6, emoji:'🧠', title:'Mental Clarity Blueprint', price:'€19', color: C.gold,   bg: C.goldSoft,  link:'https://buy.stripe.com/4gMdR89ud0hFgci6bSfAc05', desc:'Reduce brain fog and build laser-sharp focus.', badge:'⭐ Premium' },
+  { id:1, emoji:'💧', title:'The Hydration Code',       price:'€14.99',  color: C.green,  bg:'#E0F2FE', link:'https://buy.stripe.com/6oU3cugWF6G3d06fMsfAc0b', desc:'Transform your energy and skin by mastering hydration.' },
+  { id:2, emoji:'😴', title:'Sleep Unlocked',         price:'€14.99',  color:'#7C3AED', bg:'#EDE9FE', link:'https://buy.stripe.com/cNi00icGp5BZ7FMfMsfAc0c', desc:'Fix your sleep and wake up energised every day.' },
+  { id:3, emoji:'🔥', title:'Fat Loss Simplified',      price:'€14.99',  color:'#EA580C', bg:'#FFEDD5', link:'https://buy.stripe.com/9B6bJ00XHc0n9NUcAgfAc0d', desc:'Lose fat and keep it off with science-backed habits.' },
+  { id:4, emoji:'💪', title:'Build Muscle at Home',     price:'€14.99',  color: C.green,  bg: C.greenSoft, link:'https://buy.stripe.com/7sYcN46i11lJ6BIgQwfAc0e', desc:'Build real muscle with no gym needed.' },
+  { id:5, emoji:'🌱', title:'30 Day Glow Up Blueprint',     price:'€24.99', color: C.gold,   bg: C.goldSoft,  link:'https://buy.stripe.com/aFa9ASgWF1lJe4a2ZGfAc0a', desc:'A full month of daily tasks to transform how you look and feel.', badge:'⭐ Premium' },
+  { id:6, emoji:'🧠', title:'Mental Clarity Blueprint', price:'€24.99', color: C.gold,   bg: C.goldSoft,  link:'https://buy.stripe.com/bJefZgayh5BZ1hocAgfAc09', desc:'Reduce brain fog and build laser-sharp focus.', badge:'⭐ Premium' },
 ];
 
 function ShopItem({ item }) {

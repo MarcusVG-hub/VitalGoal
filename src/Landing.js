@@ -486,7 +486,7 @@ function Landing({ onGetStarted }) {
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '20px', textAlign: 'left' }}>
             {[
               { name: 'Sarah M.', age: '28', quote: "I've tried every health app out there. VitalGoal is the only one I actually stuck with. The daily streak feature alone changed everything for me.", stars: 5 },
-              { name: 'James K.', age: '34', quote: "The Sleep Like a Pro guide genuinely fixed my sleep in two weeks. I was sceptical but the science is solid and the advice actually works.", stars: 5 },
+              { name: 'James K.', age: '34', quote: "The Sleep Unlocked guide genuinely fixed my sleep in two weeks. I was sceptical but the science is solid and the advice actually works.", stars: 5 },
               { name: 'Priya R.', age: '25', quote: "So simple. I log everything in under a minute every morning. After 30 days I could actually see my habits improving in the charts. Love it.", stars: 5 },
             ].map(t => (
               <div key={t.name} className="hover-lift" style={{ background: C.white, border: `1px solid ${C.border}`, borderRadius: '20px', padding: '28px', boxShadow: '0 4px 20px rgba(27,122,62,0.06)' }}>
@@ -548,12 +548,12 @@ function Landing({ onGetStarted }) {
           </p>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(310px, 1fr))', gap: '20px', textAlign: 'left' }}>
             {[
-              { emoji:'💧', title:'Hydration Mastery',       price:'€7',  desc:'Transform your energy, skin and focus by mastering daily hydration habits.',                            isPremium: false, link:'https://buy.stripe.com/00waEWgWF9Sf2lsas8fAc00' },
-              { emoji:'😴', title:'Sleep Like a Pro',         price:'€9',  desc:'Fix your sleep, build a night routine and wake up energised every single day.',                        isPremium: false, link:'https://buy.stripe.com/dRm5kC35Pc0nd067fWfAc01' },
-              { emoji:'🔥', title:'Fat Loss Simplified',      price:'€9',  desc:'Lose fat and keep it off with a simple, science-backed calorie and habit guide.',                      isPremium: false, link:'https://buy.stripe.com/9B6fZg6i1c0n6BIcAgfAc02' },
-              { emoji:'💪', title:'Build Muscle at Home',     price:'€9',  desc:'Build real muscle with no gym and no equipment using progressive bodyweight training.',                isPremium: false, link:'https://buy.stripe.com/eVq9AS49Te8v2ls0RyfAc03' },
-              { emoji:'🌱', title:'30 Day Glow Up Guide',     price:'€19', desc:'A complete month of daily health, fitness and mindset tasks to transform how you look and feel.',      isPremium: true,  badge:'⭐ Premium', link:'https://buy.stripe.com/3cIeVc35P3tRd06bwcfAc04' },
-              { emoji:'🧠', title:'Mental Clarity Blueprint', price:'€19', desc:'Reduce brain fog, build laser focus and create a daily routine that keeps your mind sharp all day.',   isPremium: true,  badge:'⭐ Premium', link:'https://buy.stripe.com/4gMdR89ud0hFgci6bSfAc05' },
+              { emoji:'💧', title:'The Hydration Code',       price:'€14.99',  desc:'Transform your energy, skin and focus by mastering daily hydration habits.',                            isPremium: false, link:'https://buy.stripe.com/6oU3cugWF6G3d06fMsfAc0b' },
+              { emoji:'😴', title:'Sleep Unlocked',         price:'€14.99',  desc:'Fix your sleep, build a night routine and wake up energised every single day.',                        isPremium: false, link:'https://buy.stripe.com/cNi00icGp5BZ7FMfMsfAc0c' },
+              { emoji:'🔥', title:'Fat Loss Simplified',      price:'€14.99',  desc:'Lose fat and keep it off with a simple, science-backed calorie and habit guide.',                      isPremium: false, link:'https://buy.stripe.com/9B6bJ00XHc0n9NUcAgfAc0d' },
+              { emoji:'💪', title:'Build Muscle at Home',     price:'€14.99',  desc:'Build real muscle with no gym and no equipment using progressive bodyweight training.',                isPremium: false, link:'https://buy.stripe.com/7sYcN46i11lJ6BIgQwfAc0e' },
+              { emoji:'🌱', title:'30 Day Glow Up Blueprint',     price:'€24.99', desc:'A complete month of daily health, fitness and mindset tasks to transform how you look and feel.',      isPremium: true,  badge:'⭐ Premium', link:'https://buy.stripe.com/aFa9ASgWF1lJe4a2ZGfAc0a' },
+              { emoji:'🧠', title:'Mental Clarity Blueprint', price:'€24.99', desc:'Reduce brain fog, build laser focus and create a daily routine that keeps your mind sharp all day.',   isPremium: true,  badge:'⭐ Premium', link:'https://buy.stripe.com/bJefZgayh5BZ1hocAgfAc09' },
             ].map(e => (
               <div key={e.title} className="hover-lift" style={{ background: C.bg, border: e.isPremium ? `1.5px solid ${C.gold}55` : `1px solid ${C.border}`, borderRadius: '20px', padding: '28px', display: 'flex', flexDirection: 'column', boxShadow: e.isPremium ? `0 4px 24px ${C.gold}22` : '0 4px 24px rgba(27,122,62,0.07)' }}>
                 {e.badge && (
