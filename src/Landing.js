@@ -259,6 +259,230 @@ function AppMockup() {
 
 function PricingCards({ onGetStarted }) {
   const [premiumAnnual, setPremiumAnnual] = React.useState(false);
+
+  const Toggle = ({ value, onChange }) => (
+    <div style={{ display: 'flex', alignItems: 'center', gap: '8px', justifyContent: 'center', marginBottom: '20px', flexWrap: 'wrap' }}>
+      <span style={{ fontSize: '13px', fontWeight: '600', color: !value ? '#fff' : 'rgba(255,255,255,0.4)' }}>Monthly</span>
+      <div
+        onClick={() => onChange(!value)}
+        style={{
+          width: '44px', height: '24px', borderRadius: '12px',
+          background: value ? '#34D468' : 'rgba(255,255,255,0.2)',
+          cursor: 'pointer', position: 'relative', transition: 'background 0.2s',
+        }}
+      >
+        <div style={{
+          position: 'absolute', top: '3px',
+          left: value ? '23px' : '3px',
+          width: '18px', height: '18px', borderRadius: '50%',
+          background: '#fff', transition: 'left 0.2s',
+        }}/>
+      </div>
+      <span style={{ fontSize: '13px', fontWeight: '600', color: value ? '#fff' : 'rgba(255,255,255,0.4)' }}>Annual</span>
+      <span style={{ background: '#34D468', borderRadius: '20px', padding: '2px 8px', fontSize: '11px', color: '#0D2415', fontWeight: '700' }}>Save 33%</span>
+    </div>
+  );
+
+  return (
+    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: '24px', alignItems: 'stretch', maxWidth: '700px', margin: '0 auto' }}>
+
+      {/* Free */}
+      <div style={{ background: '#fff', border: '1px solid rgba(27,122,62,0.15)', borderRadius: '24px', padding: '36px 28px', textAlign: 'left', display: 'flex', flexDirection: 'column' }}>
+        <div style={{ color: '#4A7A5A', fontWeight: '700', fontSize: '13px', letterSpacing: '1px', marginBottom: '12px', textTransform: 'uppercase' }}>Free</div>
+        <div style={{ color: '#1A3322', fontWeight: '700', fontSize: '40px', marginBottom: '4px' }}>€0</div>
+        <div style={{ color: '#4A7A5A', fontSize: '14px', marginBottom: '28px' }}>Forever free</div>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', marginBottom: '28px', flex: 1 }}>
+          {['Full health tracker','Water, steps, sleep, calories, mood','7-day charts and insights','Streak tracking','BMI calculator'].map(f => (
+            <div key={f} style={{ display: 'flex', alignItems: 'flex-start', gap: '10px', color: '#1A3322', fontSize: '14px' }}>
+              <span style={{ color: '#1B7A3E', fontWeight: '700', fontSize: '16px', flexShrink: 0 }}>✓</span>{f}
+            </div>
+          ))}
+        </div>
+        <button onClick={onGetStarted} style={{ width: '100%', background: '#EAF6ED', border: '1px solid rgba(27,122,62,0.15)', borderRadius: '50px', color: '#1B7A3E', fontSize: '15px', fontWeight: '700', padding: '14px', cursor: 'pointer', fontFamily: 'inherit' }}>
+          Get Started Free
+        </button>
+      </div>
+
+      {/* Premium */}
+      <div style={{ background: '#0D2415', border: '2px solid #28A855', borderRadius: '24px', padding: '36px 28px', textAlign: 'left', position: 'relative', overflow: 'hidden', display: 'flex', flexDirection: 'column' }}>
+        <div style={{ position: 'absolute', top: '16px', right: '16px', background: '#28A855', borderRadius: '50px', padding: '4px 12px', color: '#fff', fontSize: '11px', fontWeight: '700' }}>🔥 Popular</div>
+        <div style={{ color: '#34D468', fontWeight: '700', fontSize: '13px', letterSpacing: '1px', marginBottom: '12px', textTransform: 'uppercase' }}>Premium</div>
+        <Toggle value={premiumAnnual} onChange={setPremiumAnnual} />
+        <div style={{ display: 'flex', alignItems: 'baseline', gap: '8px', marginBottom: '4px' }}>
+          <div style={{ color: '#fff', fontWeight: '700', fontSize: '40px' }}>{premiumAnnual ? '€119.99' : '€14.99'}</div>
+          {premiumAnnual && <div style={{ color: 'rgba(255,255,255,0.3)', fontSize: '14px', textDecoration: 'line-through' }}>€179.88</div>}
+        </div>
+        <div style={{ color: 'rgba(255,255,255,0.4)', fontSize: '14px', marginBottom: '28px' }}>
+          {premiumAnnual ? 'per year · €10/mo · 7-day free trial' : 'per month · 7-day free trial'}
+        </div>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', marginBottom: '28px', flex: 1 }}>
+          {[
+            'Everything in Free',
+            'Unlimited data history',
+            'Priority support',
+            '10% off all guides',
+            'Early access to new features',
+            'Premium profile badge',
+            '🤖 AI Health Assistant (coming soon)',
+            '📊 AI weekly health report (coming soon)',
+            '🎯 Personalised AI recommendations (coming soon)',
+          ].map(f => (
+            <div key={f} style={{ display: 'flex', alignItems: 'flex-start', gap: '10px', color: 'rgba(255,255,255,0.85)', fontSize: '14px' }}>
+              <span style={{ color: '#34D468', fontWeight: '700', fontSize: '16px', flexShrink: 0 }}>✓</span>{f}
+            </div>
+          ))}
+        </div>
+        <a href={premiumAnnual ? 'https://buy.stripe.com/00wfZgbCl4xV8JQ43KfAc08' : 'https://buy.stripe.com/7sYdR85dX7K75xE0RyfAc06'} target="_blank" rel="noopener noreferrer"
+          style={{ display: 'block', width: '100%', background: 'linear-gradient(135deg, #1B7A3E, #28A855)', border: 'none', borderRadius: '50px', color: '#fff', fontSize: '15px', fontWeight: '700', padding: '14px', textDecoration: 'none', textAlign: 'center', boxShadow: '0 8px 32px rgba(27,122,62,0.4)', boxSizing: 'border-box' }}>
+          Start Free Trial →
+        </a>
+      </div>
+
+    </div>
+  );
+}
+
+
+function Blobs() {
+  return (
+    <svg style={{ position:'absolute', inset:0, width:'100%', height:'100%', pointerEvents:'none', overflow:'hidden' }} preserveAspectRatio="xMidYMid slice">
+      <defs>
+        <filter id="b1"><feGaussianBlur stdDeviation="40"/></filter>
+        <filter id="b2"><feGaussianBlur stdDeviation="55"/></filter>
+        <filter id="b3"><feGaussianBlur stdDeviation="35"/></filter>
+      </defs>
+      <ellipse cx="10%" cy="15%" rx="320" ry="260" fill="#28A855" opacity="0.09" filter="url(#b1)"/>
+      <ellipse cx="88%" cy="8%"  rx="240" ry="200" fill="#1B7A3E" opacity="0.07" filter="url(#b2)"/>
+      <ellipse cx="55%" cy="45%" rx="180" ry="150" fill="#34D468" opacity="0.06" filter="url(#b3)"/>
+      <ellipse cx="92%" cy="85%" rx="300" ry="240" fill="#28A855" opacity="0.08" filter="url(#b1)"/>
+      <ellipse cx="8%"  cy="80%" rx="160" ry="140" fill="#1B7A3E" opacity="0.06" filter="url(#b2)"/>
+    </svg>
+  );
+}
+
+function DotGrid() {
+  return (
+    <svg style={{ position:'absolute', inset:0, width:'100%', height:'100%', pointerEvents:'none', opacity:0.35 }}>
+      <defs>
+        <pattern id="dots" x="0" y="0" width="28" height="28" patternUnits="userSpaceOnUse">
+          <circle cx="2" cy="2" r="1.2" fill={C.green} opacity="0.3"/>
+        </pattern>
+      </defs>
+      <rect width="100%" height="100%" fill="url(#dots)"/>
+    </svg>
+  );
+}
+
+// ── App mockup using pure CSS/SVG ──
+function AppMockup() {
+  return (
+    <div style={{
+      position: 'relative', width: '260px', margin: '60px auto 0',
+      filter: 'drop-shadow(0 32px 64px rgba(27,122,62,0.25))',
+    }}>
+      {/* Phone frame */}
+      <div style={{
+        width: '260px', height: '520px',
+        background: '#0a0a0f',
+        borderRadius: '40px',
+        border: '2px solid rgba(255,255,255,0.12)',
+        overflow: 'hidden',
+        position: 'relative',
+      }}>
+        {/* Notch */}
+        <div style={{
+          width: '80px', height: '20px',
+          background: '#0a0a0f',
+          borderRadius: '0 0 14px 14px',
+          position: 'absolute', top: 0, left: '50%',
+          transform: 'translateX(-50%)', zIndex: 10,
+        }}/>
+
+        {/* App header */}
+        <div style={{ padding: '28px 16px 10px', borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <div>
+              <div style={{ fontSize: '13px', fontWeight: '800', background: 'linear-gradient(135deg, #34d399, #38bdf8)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>⚡ VitalGoal</div>
+              <div style={{ color: '#6b7280', fontSize: '9px', marginTop: '1px' }}>Hello, Marcus 👋</div>
+            </div>
+            <div style={{ background: 'rgba(251,146,60,0.15)', border: '1px solid rgba(251,146,60,0.3)', color: '#fb923c', fontSize: '8px', fontWeight: '700', borderRadius: '20px', padding: '3px 8px' }}>🔥 7 day streak</div>
+          </div>
+        </div>
+
+        {/* Metric rings */}
+        <div style={{ display: 'flex', gap: '6px', padding: '10px 10px 6px' }}>
+          {[
+            { icon:'💧', val:'6/8', label:'Water', color:'#38bdf8', pct:75 },
+            { icon:'🚶', val:'8.2k', label:'Steps', color:'#34d399', pct:82 },
+            { icon:'😴', val:'7.5h', label:'Sleep', color:'#a78bfa', pct:94 },
+          ].map(m => (
+            <div key={m.label} style={{ flex:1, background:'rgba(255,255,255,0.04)', border:'1px solid rgba(255,255,255,0.07)', borderRadius:'10px', padding:'8px 6px', textAlign:'center' }}>
+              <svg width="32" height="32" style={{ transform:'rotate(-90deg)', display:'block', margin:'0 auto' }}>
+                <circle cx="16" cy="16" r="12" fill="none" stroke="rgba(255,255,255,0.08)" strokeWidth="3"/>
+                <circle cx="16" cy="16" r="12" fill="none" stroke={m.color} strokeWidth="3"
+                  strokeDasharray={`${2*Math.PI*12}`}
+                  strokeDashoffset={`${2*Math.PI*12*(1-m.pct/100)}`}
+                  strokeLinecap="round"/>
+              </svg>
+              <div style={{ color:'#fff', fontWeight:'700', fontSize:'9px', marginTop:'3px' }}>{m.val}</div>
+              <div style={{ color:'#6b7280', fontSize:'8px' }}>{m.label}</div>
+            </div>
+          ))}
+        </div>
+
+        {/* Mini bar chart */}
+        <div style={{ padding:'6px 10px 8px' }}>
+          <div style={{ color:'#fff', fontSize:'9px', fontWeight:'700', marginBottom:'6px' }}>📈 7-Day Steps</div>
+          <div style={{ display:'flex', alignItems:'flex-end', gap:'4px', height:'36px' }}>
+            {[35,55,42,70,60,48,85].map((h,i) => (
+              <div key={i} style={{ flex:1, height:`${h}%`, background: i===6 ? '#34d399' : '#34d39966', borderRadius:'3px 3px 0 0' }}/>
+            ))}
+          </div>
+          <div style={{ display:'flex', justifyContent:'space-between', marginTop:'3px' }}>
+            {['M','T','W','T','F','S','S'].map((d,i) => (
+              <div key={i} style={{ flex:1, color: i===6 ? '#34d399' : '#374151', fontSize:'7px', textAlign:'center' }}>{d}</div>
+            ))}
+          </div>
+        </div>
+
+        {/* Streak chips */}
+        <div style={{ display:'flex', gap:'5px', padding:'0 10px 8px' }}>
+          {[['🔥','7','streak'],['🏆','14','best'],['⚖️','22.4','BMI']].map(([icon,val,lbl]) => (
+            <div key={lbl} style={{ flex:1, background:'rgba(255,255,255,0.04)', border:'1px solid rgba(255,255,255,0.07)', borderRadius:'8px', padding:'6px 4px', textAlign:'center' }}>
+              <div style={{ fontSize:'12px' }}>{icon}</div>
+              <div style={{ color:'#fff', fontWeight:'700', fontSize:'10px' }}>{val}</div>
+              <div style={{ color:'#6b7280', fontSize:'7px' }}>{lbl}</div>
+            </div>
+          ))}
+        </div>
+
+        {/* Mood row */}
+        <div style={{ display:'flex', justifyContent:'space-around', padding:'0 16px 10px' }}>
+          {['😞','😐','🙂','😄','🤩'].map((e,i) => (
+            <div key={i} style={{ fontSize:'16px', opacity: i===3 ? 1 : 0.25, transform: i===3 ? 'scale(1.2)' : 'scale(1)' }}>{e}</div>
+          ))}
+        </div>
+
+        {/* Bottom nav */}
+        <div style={{ position:'absolute', bottom:0, left:0, right:0, background:'rgba(10,10,15,0.95)', borderTop:'1px solid rgba(255,255,255,0.07)', display:'flex', padding:'8px 0 12px' }}>
+          {[['📊','Home'],['✏️','Log'],['🛒','Shop'],['👤','Profile']].map(([icon,label],i) => (
+            <div key={label} style={{ flex:1, textAlign:'center' }}>
+              <div style={{ fontSize:'14px' }}>{icon}</div>
+              <div style={{ fontSize:'8px', color: i===0 ? '#34d399' : '#4b5563', fontWeight:'600' }}>{label}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Glow under phone */}
+      <div style={{ position:'absolute', bottom:'-20px', left:'10%', right:'10%', height:'40px', background:'rgba(27,122,62,0.3)', filter:'blur(20px)', borderRadius:'50%' }}/>
+    </div>
+  );
+}
+
+
+function PricingCards({ onGetStarted }) {
+  const [premiumAnnual, setPremiumAnnual] = React.useState(false);
   const [aiAnnual, setAiAnnual] = React.useState(false);
 
   const Toggle = ({ value, onChange }) => (
