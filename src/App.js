@@ -15,7 +15,7 @@ import Landing from './Landing';
 function Onboarding({ onDone }) {
   const [step, setStep] = useState(0);
   const [form, setForm] = useState({
-    name: '', age: '', height: '', weight: '', goal: 'maintain',
+    name: '', age: '', height: '', weight: '', goal: 'maintain', gender: '',
   });
   const set = (k, v) => setForm(f => ({ ...f, [k]: v }));
 
@@ -39,6 +39,18 @@ function Onboarding({ onDone }) {
       title: 'Your stats',
       content: (
         <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+          <div style={{ display: 'flex', gap: '8px' }}>
+            {[['male','👨 Male'],['female','👩 Female'],['other','🧑 Other']].map(([v,l]) => (
+              <button key={v} onClick={() => set('gender', v)} style={{
+                flex: 1, padding: '10px 6px', borderRadius: '10px',
+                background: form.gender === v ? 'rgba(52,211,153,0.12)' : 'rgba(255,255,255,0.06)',
+                border: form.gender === v ? '1px solid #34d399' : '1px solid rgba(255,255,255,0.1)',
+                color: form.gender === v ? '#34d399' : '#9ca3af',
+                fontSize: '13px', fontWeight: '600', cursor: 'pointer',
+                transition: 'all 0.2s',
+              }}>{l}</button>
+            ))}
+          </div>
           <input style={obInput} type="number" placeholder="Age (years)"
             value={form.age} onChange={e => set('age', e.target.value)} />
           <input style={obInput} type="number" placeholder="Height (cm)"
@@ -158,7 +170,6 @@ export default function App() {
   const [loading, setLoading] = useState(true);
   const [showLanding, setShowLanding] = useState(true);
 
-  // Check if user is logged in
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
       setUser(session?.user ?? null);
@@ -265,7 +276,7 @@ export default function App() {
     );
   }
 
-  // Not logged in — show landing or auth
+  // Not logged in
   if (!user) {
     if (showLanding) {
       return <Landing onGetStarted={() => setShowLanding(false)} />;
@@ -273,17 +284,15 @@ export default function App() {
     return <Auth onAuth={() => {}} />;
   }
 
-  // Logged in but no profile — show onboarding
+  // Logged in but no profile
   if (!state.profile.name) {
     return <Onboarding onDone={handleOnboardingDone} />;
   }
 
   return (
     <div style={{
-      maxWidth: '480px',
-      margin: '0 auto',
-      minHeight: '100vh',
-      background: '#0a0a0f',
+      maxWidth: '480px', margin: '0 auto',
+      minHeight: '100vh', background: '#F5FBF6',
       position: 'relative',
     }}>
       {/* Toast */}
@@ -291,34 +300,23 @@ export default function App() {
         <div style={{
           position: 'fixed', bottom: '90px', left: '50%',
           transform: 'translateX(-50%)',
-          background: toast.includes('❌') ? '#ef4444' : '#10b981',
+          background: toast.includes('❌') ? '#ef4444' : '#1B7A3E',
           color: '#fff', fontWeight: '700', fontSize: '14px',
           padding: '10px 24px', borderRadius: '24px',
-          zIndex: 999, boxShadow: '0 4px 24px rgba(0,0,0,0.4)',
+          zIndex: 999, boxShadow: '0 4px 24px rgba(0,0,0,0.2)',
           whiteSpace: 'nowrap',
         }}>{toast}</div>
       )}
 
-      {/* Header */}
       <Header name={state.profile.name} streak={state.streaks.current} />
 
-      {/* Page content */}
       <div style={{ padding: '16px 16px 100px' }}>
-        {tab === 'dashboard' && (
-          <Dashboard state={state} onTabChange={setTab} />
-        )}
-        {tab === 'tracker' && (
-          <Tracker state={state} onSave={handleSaveLog} />
-        )}
-        {tab === 'shop' && (
-          <Shop />
-        )}
-        {tab === 'profile' && (
-          <Profile state={state} onSave={handleSaveProfile} onSignOut={handleSignOut} />
-        )}
+        {tab === 'dashboard' && <Dashboard state={state} onTabChange={setTab} />}
+        {tab === 'tracker'   && <Tracker state={state} onSave={handleSaveLog} />}
+        {tab === 'shop'      && <Shop />}
+        {tab === 'profile'   && <Profile state={state} onSave={handleSaveProfile} onSignOut={handleSignOut} />}
       </div>
 
-      {/* Bottom Nav */}
       <BottomNav currentTab={tab} onTabChange={setTab} />
     </div>
   );
