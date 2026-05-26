@@ -279,7 +279,7 @@ function PricingCards({ onGetStarted }) {
         }}/>
       </div>
       <span style={{ fontSize: '13px', fontWeight: '600', color: value ? '#fff' : 'rgba(255,255,255,0.4)' }}>Annual</span>
-      <span style={{ background: '#34D468', borderRadius: '20px', padding: '2px 8px', fontSize: '11px', color: '#0D2415', fontWeight: '700' }}>Save 33%</span>
+      <span style={{ background: '#34D468', borderRadius: '20px', padding: '2px 8px', fontSize: '11px', color: '#0D2415', fontWeight: '700' }}>Save 40%</span>
     </div>
   );
 
@@ -309,11 +309,11 @@ function PricingCards({ onGetStarted }) {
         <div style={{ color: '#34D468', fontWeight: '700', fontSize: '13px', letterSpacing: '1px', marginBottom: '12px', textTransform: 'uppercase' }}>Premium</div>
         <Toggle value={premiumAnnual} onChange={setPremiumAnnual} />
         <div style={{ display: 'flex', alignItems: 'baseline', gap: '8px', marginBottom: '4px' }}>
-          <div style={{ color: '#fff', fontWeight: '700', fontSize: '40px' }}>{premiumAnnual ? '€119.99' : '€14.99'}</div>
+          <div style={{ color: '#fff', fontWeight: '700', fontSize: '40px' }}>{premiumAnnual ? '€89.99' : '€14.99'}</div>
           {premiumAnnual && <div style={{ color: 'rgba(255,255,255,0.3)', fontSize: '14px', textDecoration: 'line-through' }}>€179.88</div>}
         </div>
         <div style={{ color: 'rgba(255,255,255,0.4)', fontSize: '14px', marginBottom: '28px' }}>
-          {premiumAnnual ? 'per year · €10/mo · 7-day free trial' : 'per month · 7-day free trial'}
+          {premiumAnnual ? 'per year · €7.50/mo · 7-day free trial' : 'per month · 7-day free trial'}
         </div>
         <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', marginBottom: '28px', flex: 1 }}>
           {[
@@ -332,7 +332,7 @@ function PricingCards({ onGetStarted }) {
             </div>
           ))}
         </div>
-        <a href={premiumAnnual ? 'https://buy.stripe.com/00wfZgbCl4xV8JQ43KfAc08' : 'https://buy.stripe.com/7sYdR85dX7K75xE0RyfAc06'} target="_blank" rel="noopener noreferrer"
+        <a href={premiumAnnual ? 'https://buy.stripe.com/14A3cugWF0hF8JQ6bSfAc0f' : 'https://buy.stripe.com/7sYdR85dX7K75xE0RyfAc06'} target="_blank" rel="noopener noreferrer"
           style={{ display: 'block', width: '100%', background: 'linear-gradient(135deg, #1B7A3E, #28A855)', border: 'none', borderRadius: '50px', color: '#fff', fontSize: '15px', fontWeight: '700', padding: '14px', textDecoration: 'none', textAlign: 'center', boxShadow: '0 8px 32px rgba(27,122,62,0.4)', boxSizing: 'border-box' }}>
           Start Free Trial →
         </a>
