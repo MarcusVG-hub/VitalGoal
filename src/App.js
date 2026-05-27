@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { supabase } from './supabase';
+import { supabase } from './supabase.js';
 import { loadProfile, saveProfile, loadHealthLogs, saveHealthLog, loadStreaks, saveStreaks, signOut } from './auth';
 import { DEFAULT_STATE, todayStr } from './data/storage';
 import Header from './components/Header';
