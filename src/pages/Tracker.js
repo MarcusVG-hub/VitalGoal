@@ -247,13 +247,22 @@ function FieldCard({ field, value, onChange, isPremium }) {
   );
 }
 
-function Tracker({ state, onSave }) {
+function Tracker({ state, onSave, showScanner: openScanner, onScannerClose }) {
   const [date, setDate] = useState(todayStr());
   const [form, setForm] = useState({});
   const [saving, setSaving] = useState(false);
 
   // Check if user is premium (placeholder — will connect to Supabase later)
-  const isPremium = state.profile?.isPremium || false;
+  const isPremium = state.profile?.is_premium || false;
+
+  // Auto open scanner when triggered from nav button
+  useEffect(() => {
+    if (openScanner) {
+      setGlobalScanner(true);
+    }
+  }, [openScanner]);
+
+  const [globalScanner, setGlobalScanner] = useState(false);
 
   useEffect(() => {
     setForm(state.logs[date] || {});
@@ -269,6 +278,13 @@ function Tracker({ state, onSave }) {
 
   return (
     <div className="page-enter" style={{ display:'flex', flexDirection:'column', gap:'16px' }}>
+      {globalScanner && (
+        <FoodScanner
+          isPremium={isPremium}
+          onClose={() => { setGlobalScanner(false); if (onScannerClose) onScannerClose(); }}
+          onResult={(calories) => { setForm(f => ({ ...f, calories: (f.calories || 0) + calories })); setGlobalScanner(false); if (onScannerClose) onScannerClose(); }}
+        />
+      )}
 
       {/* Date picker */}
       <div style={{ background:C.white, borderRadius:'16px', padding:'16px', border:`1px solid ${C.border}`, boxShadow:C.shadow, display:'flex', justifyContent:'space-between', alignItems:'center' }}>

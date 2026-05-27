@@ -169,6 +169,7 @@ export default function App() {
   const [toast, setToast] = useState(null);
   const [loading, setLoading] = useState(true);
   const [showLanding, setShowLanding] = useState(true);
+  const [showScanner, setShowScanner] = useState(false);
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
@@ -312,12 +313,12 @@ export default function App() {
 
       <div style={{ padding: '16px 16px 100px' }}>
         {tab === 'dashboard' && <Dashboard state={state} onTabChange={setTab} />}
-        {tab === 'tracker'   && <Tracker state={state} onSave={handleSaveLog} />}
+        {tab === 'tracker'   && <Tracker state={state} onSave={handleSaveLog} showScanner={showScanner} onScannerClose={() => setShowScanner(false)} />}
         {tab === 'shop'      && <Shop />}
         {tab === 'profile'   && <Profile state={state} onSave={handleSaveProfile} onSignOut={handleSignOut} />}
       </div>
 
-      <BottomNav currentTab={tab} onTabChange={setTab} />
+      <BottomNav currentTab={tab} onTabChange={setTab} onScan={() => { setTab('tracker'); setShowScanner(true); }} />
     </div>
   );
 }
