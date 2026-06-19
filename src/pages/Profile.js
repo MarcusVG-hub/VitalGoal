@@ -49,6 +49,25 @@ function Profile({ state, onSave, onSignOut }) {
         <div style={{ color: 'rgba(255,255,255,0.7)', fontSize: '13px', marginTop: '4px' }}>
           {form.goal === 'lose' ? '🔥 Goal: Lose Weight' : form.goal === 'gain' ? '💪 Goal: Build Muscle' : '⚖️ Goal: Stay Healthy'}
         </div>
+        {state.profile?.is_premium && (
+          <div style={{
+            display: 'inline-flex', alignItems: 'center', gap: '6px',
+            background: 'rgba(181,136,58,0.2)',
+            border: '1px solid rgba(181,136,58,0.4)',
+            borderRadius: '50px', padding: '4px 14px', marginTop: '10px',
+            color: '#F4E4C1', fontSize: '13px', fontWeight: '700',
+          }}>✨ Premium Member</div>
+        )}
+        {!state.profile?.is_premium && (
+          <a href="https://buy.stripe.com/7sYdR85dX7K75xE0RyfAc06" target="_blank" rel="noopener noreferrer" style={{
+            display: 'inline-flex', alignItems: 'center', gap: '6px',
+            background: 'rgba(255,255,255,0.15)',
+            border: '1px solid rgba(255,255,255,0.3)',
+            borderRadius: '50px', padding: '4px 14px', marginTop: '10px',
+            color: '#fff', fontSize: '13px', fontWeight: '700',
+            textDecoration: 'none',
+          }}>⚡ Upgrade to Premium</a>
+        )}
       </div>
 
       {/* BMI card */}
