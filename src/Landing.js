@@ -557,6 +557,81 @@ function Landing({ onGetStarted }) {
         </div>
       </section>
 
+
+      {/* BUNDLES */}
+      <section style={{ padding: 'clamp(60px, 8vw, 100px) clamp(20px, 5vw, 48px)', background: C.dark, position: 'relative', overflow: 'hidden' }}>
+        <svg style={{ position:'absolute', inset:0, width:'100%', height:'100%', pointerEvents:'none' }} preserveAspectRatio="xMidYMid slice">
+          <defs><filter id="bb"><feGaussianBlur stdDeviation="60"/></filter></defs>
+          <ellipse cx="10%" cy="50%" rx="300" ry="250" fill={C.green} opacity="0.1" filter="url(#bb)"/>
+          <ellipse cx="90%" cy="50%" rx="300" ry="250" fill={C.green2} opacity="0.08" filter="url(#bb)"/>
+        </svg>
+        <div style={{ maxWidth: '900px', margin: '0 auto', textAlign: 'center', position: 'relative', zIndex: 1 }}>
+          <div style={{ display: 'inline-block', background: 'rgba(52,212,104,0.12)', borderRadius: '50px', padding: '6px 20px', marginBottom: '24px', color: C.green3, fontSize: '14px', fontWeight: '600' }}>🎁 Bundles</div>
+          <h2 style={{ fontSize: 'clamp(28px, 4vw, 48px)', fontWeight: '700', letterSpacing: '-1.5px', color: C.white, margin: '0 0 16px' }}>
+            Get more.<br />
+            <span style={{ background: `linear-gradient(135deg, ${C.green3}, ${C.green2})`, WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>Pay less.</span>
+          </h2>
+          <p style={{ color: 'rgba(255,255,255,0.5)', fontSize: '17px', lineHeight: '1.65', maxWidth: '500px', margin: '0 auto 56px', fontWeight: '500' }}>
+            Combine guides and a subscription for the best value. Save more, transform faster.
+          </p>
+
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '24px' }}>
+
+            {/* Health Kickstart Bundle */}
+            <div style={{ background: 'rgba(255,255,255,0.04)', border: `1px solid ${C.green}44`, borderRadius: '24px', padding: '32px 28px', textAlign: 'left', display: 'flex', flexDirection: 'column' }}>
+              <div style={{ display: 'inline-block', background: 'rgba(52,212,104,0.12)', borderRadius: '50px', padding: '4px 14px', color: C.green3, fontSize: '12px', fontWeight: '700', marginBottom: '20px' }}>🌱 Starter Bundle</div>
+              <h3 style={{ color: C.white, fontWeight: '700', fontSize: '22px', margin: '0 0 8px' }}>Health Kickstart</h3>
+              <p style={{ color: 'rgba(255,255,255,0.5)', fontSize: '14px', lineHeight: '1.6', margin: '0 0 24px' }}>
+                The perfect way to start your health journey. Get a guide of your choice plus 3 months of Premium.
+              </p>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', marginBottom: '28px', flex: 1 }}>
+                {['📚 2 guides of your choice', '💚 3 months Premium subscription', '📸 Food scanner access', '🔒 Unlimited data history', '7-day free trial included'].map(f => (
+                  <div key={f} style={{ display: 'flex', alignItems: 'flex-start', gap: '10px', color: 'rgba(255,255,255,0.75)', fontSize: '14px' }}>
+                    <span style={{ color: C.green3, fontWeight: '700', flexShrink: 0 }}>✓</span>{f}
+                  </div>
+                ))}
+              </div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '20px' }}>
+                <div style={{ color: C.white, fontWeight: '700', fontSize: '36px' }}>€49.99</div>
+                <div style={{ color: 'rgba(255,255,255,0.3)', fontSize: '16px', textDecoration: 'line-through' }}>€64.99</div>
+                <div style={{ background: C.green2, borderRadius: '50px', padding: '3px 10px', color: C.white, fontSize: '12px', fontWeight: '700' }}>Save 23%</div>
+              </div>
+              <a href="https://buy.stripe.com/bJefZg7m54xVf8efMsfAc0i" style={{ display: 'block', textAlign: 'center', background: `linear-gradient(135deg, ${C.green}, ${C.green2})`, borderRadius: '50px', color: C.white, fontSize: '15px', fontWeight: '700', padding: '14px', textDecoration: 'none', boxShadow: `0 8px 24px rgba(27,122,62,0.4)` }}>
+                Get Kickstart Bundle →
+              </a>
+              
+            </div>
+
+            {/* Health Annual Mastery Bundle */}
+            <div style={{ background: `linear-gradient(160deg, rgba(27,122,62,0.2), rgba(40,168,85,0.1))`, border: `2px solid ${C.green2}`, borderRadius: '24px', padding: '32px 28px', textAlign: 'left', display: 'flex', flexDirection: 'column', position: 'relative' }}>
+              <div style={{ position: 'absolute', top: '16px', right: '16px', background: C.green2, borderRadius: '50px', padding: '4px 12px', color: C.white, fontSize: '11px', fontWeight: '700' }}>⭐ Best Value</div>
+              <div style={{ display: 'inline-block', background: 'rgba(52,212,104,0.15)', borderRadius: '50px', padding: '4px 14px', color: C.green3, fontSize: '12px', fontWeight: '700', marginBottom: '20px' }}>💎 Premium Bundle</div>
+              <h3 style={{ color: C.white, fontWeight: '700', fontSize: '22px', margin: '0 0 8px' }}>Health Annual Mastery</h3>
+              <p style={{ color: 'rgba(255,255,255,0.5)', fontSize: '14px', lineHeight: '1.6', margin: '0 0 24px' }}>
+                The complete health transformation package. 3 guides plus a full year of Premium.
+              </p>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', marginBottom: '28px', flex: 1 }}>
+                {['📚 3 guides of your choice + 1 premium guide', '💚 Annual Premium subscription', '📸 Food scanner access', '🔒 Unlimited data history', '🤖 AI features when live', '⚡ Priority support', '7-day free trial included'].map(f => (
+                  <div key={f} style={{ display: 'flex', alignItems: 'flex-start', gap: '10px', color: 'rgba(255,255,255,0.75)', fontSize: '14px' }}>
+                    <span style={{ color: C.green3, fontWeight: '700', flexShrink: 0 }}>✓</span>{f}
+                  </div>
+                ))}
+              </div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '20px' }}>
+                <div style={{ color: C.white, fontWeight: '700', fontSize: '36px' }}>€109.99</div>
+                <div style={{ color: 'rgba(255,255,255,0.3)', fontSize: '16px', textDecoration: 'line-through' }}>€159.99</div>
+                <div style={{ background: C.green2, borderRadius: '50px', padding: '3px 10px', color: C.white, fontSize: '12px', fontWeight: '700' }}>Save 31%</div>
+              </div>
+              <a href="https://buy.stripe.com/3cI28q6i19SfbW243KfAc0j" style={{ display: 'block', textAlign: 'center', background: `linear-gradient(135deg, ${C.green2}, ${C.green3})`, borderRadius: '50px', color: C.white, fontSize: '15px', fontWeight: '700', padding: '14px', textDecoration: 'none', boxShadow: `0 8px 24px rgba(27,122,62,0.4)` }}>
+                Get Mastery Bundle →
+              </a>
+              
+            </div>
+
+          </div>
+        </div>
+      </section>
+
       {/* WHY */}
       <section id="why" style={{ padding: 'clamp(60px, 8vw, 120px) clamp(20px, 5vw, 48px)', background: C.bgAlt }}>
         <div style={{ maxWidth: '900px', margin: '0 auto', textAlign: 'center' }}>
